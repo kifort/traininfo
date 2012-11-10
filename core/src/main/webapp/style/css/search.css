@@ -1,0 +1,111 @@
+/*
+ * Traininfo - Hungarian train timetable for Amazon Kindle eBook
+ * Copyright (C) 2012-2022 Tamás Kifor
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see http://www.gnu.org/licenses/.
+ *
+ * If you have any question contact to Tamás Kifor via email: tamas@kifor.hu
+ */
+/*@import url("stle/css/resetHtml5DoctorMinified.css");*/
+@import url("http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css");
+
+/*http://wrenlanier.com/5-things-to-do-after-reset-css/*/
+/*
+h1 {font-size: 28px;}
+h2 {font-size: 24px;}
+h3 {font-size: 18px;}
+h4 {font-size: 14px;}
+h5 {font-size: 12px;}
+h6 {font-size: 10px;}
+p {font-size: 12px; padding-bottom: 18px;} 
+
+.post ol li {list-style-type: decimal; padding-bottom: 0.85em;}
+.post ul li {list-style-type: disc; padding-bottom: 0.85em;}
+
+em {font-style: italic;}
+strong {font-weight: bold;}
+
+blockquote {margin: 0px 36px; background-color: #f5f5f5;}
+*/
+
+/*TODO :focus to form elements*/
+
+/* Inline definition lists: http://www.maxdesign.com.au/articles/definition */
+
+dl.searchForm{
+    float: left;
+	width: 550px;
+	margin: 1em 0;
+	padding: 0;
+	border-bottom: 1px solid #999;
+}
+.searchForm dt
+{
+	clear: left;
+	float: left;
+	width: 260px;
+	margin: 0;
+	padding: 5px;
+	border-top: 1px solid #999;
+	font-weight: bold;
+}
+.searchForm dd
+{
+	float: left;
+	width: 260px;
+	margin: 0;
+	padding: 5px;
+	border-top: 1px solid #999;
+}
+
+dl.favouriteForm{
+    float: left;
+	width: 550px;
+	margin: 1em 0;
+	padding: 0;
+	border-bottom: 1px solid #999;
+}
+.favouriteForm dt
+{
+	clear: left;
+	float: left;
+	width: 400px;
+	margin: 0;
+	padding: 5px;
+	border-top: 1px solid #999;
+	font-weight: bold;
+}
+.favouriteForm dd
+{
+	float: left;
+	width: 130px;
+	margin: 0;
+	padding: 5px;
+	border-top: 1px solid #999;
+}
+
+/* dt, dd { margin: 0; padding: 0; } */
+/* dt { float: left; margin-right: 0.3em; } */
+/* dd { clear: right; } */
+
+button.searchBtn{
+    position:relative;
+    bottom:0;
+    right:0;
+}
+
+dd.deleteFavouriteBtn{
+    position:relative;
+    right:0;
+}

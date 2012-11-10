@@ -4,3 +4,5 @@
 **.settings
 **.classpath
 **.DS_Store
+**.tmp_*
+core/src/main/webapp/script/php/version.php
