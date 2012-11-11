@@ -22,9 +22,22 @@
         Upload project with FTP from ant.
     </description>
     <!-- TODO consider SCP (optionally with SFTP) instead of FTP using keyfile instead of ftp pwd -->
-    <loadproperties srcfile="ant.properties" />
-
-    <target name="clear">
+	
+    <property file="ant.properties"/>
+    
+    <target name="check-properties">
+        <condition property="properties-checked">
+            <and>
+                <isset property="ftp-server"/>
+                <isset property="ftp-uname"/>
+                <isset property="ftp-pwd"/>
+                <isset property="ftp-dir"/>
+            </and>
+        </condition>
+        <fail unless="properties-checked" message="Missing property: ftp-server, ftp-uname, ftp-pwd or ftp-dir"/>
+    </target>
+    
+    <target name="clear" depends="check-properties" if="properties-checked">
         <ftp server="${ftp-server}" userid="${ftp-uname}" password="${ftp-pwd}" remotedir="${ftp-dir}" action="del">
             <fileset>
                 <exclude name="qa*" />
@@ -37,7 +50,7 @@
         </ftp>
     </target>
 
-    <target name="upload" depends="clear">
+    <target name="upload" depends="check-properties,clear" if="properties-checked">
         <unzip src="target/lib/traininfo.zip" dest="target/webapp" />
         <ftp server="${ftp-server}" userid="${ftp-uname}" password="${ftp-pwd}" remotedir="${ftp-dir}">
             <fileset dir="target/webapp" />
