@@ -57,7 +57,7 @@ function showTimetable($tripCollection){
 <body>
   <div class="mainArea">
     <!-- New search link -->
-    <a href="search.php" class="searchLink">Új keresés</a>
+    <a id="searchLink" name="searchLink" href="search.php" class="searchLink">Új keresés</a>
 	<h1 id="mainTitle" name="mainTitle" class="mainTitle">
     <?php
 		echo $tripCollection->userFromStation->stationName . " - ";
@@ -95,18 +95,22 @@ function showTimetable($tripCollection){
     foreach ($tripCollection->trips as $trip){
 		$tripIndex++;
 		$evenOrOddTripCssClass = ($tripIndex%2==0)?"evenTrip":"oddTrip";
+		$tripinfoLinkId = "tripinfoLink" . $tripIndex;
+		$fromStationLinkId =  "fromStationLink" . $tripIndex . "_1";
+		$toStationLinkId =  "toStationLink" . $tripIndex . "_1";
+		$trainLinkId =  "trainLink" . $tripIndex . "_1";
     	echo "<tr class=\"trip," . $evenOrOddTripCssClass . "\">";
 	?>
     	<td class="tripIndex">
-    	    <?php echo $tripIndex;?>. út - <a href="timetable.php?tripIndex=<?php echo $tripIndex;?>">Részletek</a>
+    	    <?php echo $tripIndex;?>. út - <a id="<?php echo $tripinfoLinkId;?>" name="<?php echo $tripinfoLinkId;?>" href="timetable.php?tripIndex=<?php echo $tripIndex;?>">Részletek</a>
 <!-- 	    	<form method="post" action="tripinfo.php"> -->
 <!--		        <input id="tripIndex" name="tripIndex" type="hidden" value="<?php echo $tripIndex?>" /> -->
 <!-- 		        <button class="tripInfoBtn" id="tripInfoBtn" name="tripInfoBtn" type="submit">Részletek</button> -->
 <!-- 	    	</form> -->
 <?php
 	    	if(count($trip->tripChapters) == 1){
-                echo "<br><a href=\"" . $trip->tripChapters[0]->userFromStation->officialLink . "\">" . $trip->tripChapters[0]->userFromStation->stationName .
-                "</a> - <a href=\"" . $trip->tripChapters[0]->userToStation->officialLink . "\">" . $trip->tripChapters[0]->userToStation->stationName . "</a>";
+                echo "<br><a id=\"" . $fromStationLinkId . "\" name=\"" . $fromStationLinkId . "\" href=\"" . $trip->tripChapters[0]->userFromStation->officialLink . "\">" . $trip->tripChapters[0]->userFromStation->stationName .
+                "</a> - <a id=\"" . $toStationLinkId . "\" name=\"" . $toStationLinkId . "\" href=\"" . $trip->tripChapters[0]->userToStation->officialLink . "\">" . $trip->tripChapters[0]->userToStation->stationName . "</a>";
             }//if exactly one trip chapter
 ?>
     	</td>
@@ -140,7 +144,7 @@ function showTimetable($tripCollection){
 				echo "2. oszt.: " . $trip->tickets->secondClass->price . " " . $trip->tickets->secondClass->priceUnit;
 				if(count($trip->tripChapters) == 1){
 ?>
-                <br>Vonat: <a class="trainLink" href="<?php echo $trip->tripChapters[0]->train->officialLink?>"><?php echo $trip->tripChapters[0]->train->trainNumber?></a>
+                <br>Vonat: <a id="<?php echo $trainLinkId;?>" name="<?php echo $trainLinkId;?>" class="trainLink" href="<?php echo $trip->tripChapters[0]->train->officialLink?>"><?php echo $trip->tripChapters[0]->train->trainNumber?></a>
 <?php
                 }//if exactly one trip chapter
         	?>
@@ -148,12 +152,17 @@ function showTimetable($tripCollection){
     </tr>
     <?php
     if(count($trip->tripChapters) > 1){
-    foreach ($trip->tripChapters as $tripChapter){
+      $tripChapterIndex = 0;
+      $fromStationLinkId =  "fromStationLink" . $tripIndex . "_" . $tripChapterIndex;
+      $toStationLinkId =  "toStationLink" . $tripIndex . "_" . $tripChapterIndex;
+      $trainLinkId =  "trainLink" . $tripIndex . "_" . $tripChapterIndex;
+      foreach ($trip->tripChapters as $tripChapter){
+        $tripChapterIndex++;
 		echo "<tr class=\"tripChapter," . $evenOrOddTripCssClass . "\">";
 	?>
         <td class="tripChapterStation">
-            <span class="station"><a href="<?php echo $trip->tripChapter->userFromStation->officialLink?>">
-            <?php echo $tripChapter->userFromStation->stationName;?></a></span> - <span class="station"><a href="<?php echo $trip->tripChapter->userToStation->officialLink?>">
+            <span class="station"><a id="<?php echo $fromStationLinkId;?>" name="<?php echo $fromStationLinkId;?>" href="<?php echo $trip->tripChapter->userFromStation->officialLink?>">
+            <?php echo $tripChapter->userFromStation->stationName;?></a></span> - <span class="station"><a id="<?php echo $toStationLinkId;?>" name="<?php echo $toStationLinkId;?>" href="<?php echo $trip->tripChapter->userToStation->officialLink?>">
             <?php echo $tripChapter->userToStation->stationName;?></a></span>
         </td>
         <td class="officialTripChapterTime"><?php echo 
@@ -187,7 +196,7 @@ function showTimetable($tripCollection){
         <!--
         <?php echo "Vonat: " . $tripChapter->train->firstStation()->stationName . " - " . $tripChapter->train->lastStation()->stationName;?>
         --> 
-        Vonat: <a class="trainLink" href="<?php echo $tripChapter->train->officialLink?>"><?php echo $tripChapter->train->trainNumber?></a>
+        Vonat: <a  id="<?php echo $trainStationLinkId;?>" name="<?php echo $trainStationLinkId;?>" class="trainLink" href="<?php echo $tripChapter->train->officialLink?>"><?php echo $tripChapter->train->trainNumber?></a>
         </td>
     </tr>
 <?php
