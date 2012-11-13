@@ -34,7 +34,7 @@ When I enter BUDAPEST* to field labelled Honnan:
 And I enter Esztergom to field labelled Hova:
 And I click on Menetrend button
 Then I should see timetable.php page within 2 seconds
-Then I should see BUDAPEST* - Esztergom title in the main title field within 3 seconds
+And I should see BUDAPEST* - Esztergom title in the main title field within 3 seconds
 
 Scenario: check navigation from timetable page back to search page
 
@@ -43,6 +43,31 @@ When I enter BUDAPEST* to field labelled Honnan:
 And I enter Esztergom to field labelled Hova:
 And I click on Menetrend button
 And timetable.php appeared
+And I click on Új keresés link
+Then I should see search.php page within 2 seconds
+And I should see BUDAPEST* in field labelled Honnan:
+And I should see Esztergom in field labelled Hova:
+
+Scenario: check navigation from timetable page to trip info page
+
+Given that I navigate to vonatinfo.hu
+When I enter BUDAPEST* to field labelled Honnan:
+And I enter Esztergom to field labelled Hova:
+And I click on Menetrend button
+And timetable.php appeared
+And I click the 1. Részletek link
+Then I should see tripinfo.php page within 2 seconds
+And I should see BUDAPEST* - Esztergom title in the main title field within 3 seconds
+
+Scenario: check navigation from trip info page back to search page
+
+Given that I navigate to vonatinfo.hu
+When I enter BUDAPEST* to field labelled Honnan:
+And I enter Esztergom to field labelled Hova:
+And I click on Menetrend button
+And timetable.php appeared
+And I click the 1. Részletek link
+And tripinfo.php appeared
 And I click on Új keresés link
 Then I should see search.php page within 2 seconds
 And I should see BUDAPEST* in field labelled Honnan:

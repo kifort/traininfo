@@ -5,6 +5,7 @@ public enum HtmlId {
     TO_STATION("toStation", "Hova:"),
     SEARCH_BTN("searchBtn", "Menetrend"),
     MAIN_TITLE("mainTitle", "main title"),
+    SEARCHTRIPINFO_LNK("tripinfoLink", "Részletek"),
     SEARCH_LNK("searchLink", "Új keresés");
 
     private static final String UNKNOWN_HTML_ELEMENT_TEXT = "Unknown HTML element text: %s";

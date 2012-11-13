@@ -86,6 +86,11 @@ public class Steps {
         browser.findElement(By.id(HtmlId.getHtmlLabelIdForLabelText(buttonOrLinkText))).click();
     }
 
+    @When("I click the $linkIndex. $linkText link")
+    public void click(Integer linkIndex, String buttonOrLinkText) {
+        browser.findElement(By.id(HtmlId.getHtmlLabelIdForLabelText(buttonOrLinkText) + linkIndex.toString())).click();
+    }
+
     @When("$expectedPage appeared")
     public void whenPageLoaded(final String webpage) {
         checkPageLoad(webpage, DEFAULT_TIMEOUT_IN_SECONDS);

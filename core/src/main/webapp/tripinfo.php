@@ -70,17 +70,15 @@ if(!isset($trip)){
 </head>
 <body>
   <div class="mainArea">
-    <a href="timetable.php" class="timetableLink">Vissza az utak listájához</a>
-    <a href="search.php" class="searchLink">Új keresés</a>
-    <h1 class="mainTitle">
-    <?php
+    <a id="timetableLink" name="timetableLink" href="timetable.php" class="timetableLink">Vissza az utak listájához</a>
+    <a id="searchLink" name="searchLink" href="search.php" class="searchLink">Új keresés</a>
+    <h1 id="mainTitle" name="mainTitle" class="mainTitle"><?php
 	    echo $tripCollection->userFromStation->stationName . " - ";
 	    if(isset($tripCollection->userViaStation) && isset($tripCollection->userViaStation->stationName) && strlen($tripCollection->userViaStation->stationName) > 0){
 			echo $tripCollection->userViaStation->stationName . " - ";
 		}
 		echo $tripCollection->userToStation->stationName;
-	?>
-	</h1>
+	?></h1>
 	<h2>
 	  <span class="tripDate">
 	    <?php echo $tripCollection->tripDate;?>
@@ -120,14 +118,14 @@ if(!isset($trip)){
 ?>
 					<tr class="station,<?php echo $evenOrOddStationCssClass;?>">
 						<td class="trip.stationIndex"><?php echo $stationIndex . ".";?></td>
-						<td class="trip.stationName"><a href="<?php echo $station->officialLink?>"><?php echo $station->stationName;?></a></td>
+						<td class="trip.stationName"><a id="stationLink<?php echo $stationIndex;?>" name="stationLink<?php echo $stationIndex;?>" href="<?php echo $station->officialLink?>"><?php echo $station->stationName;?></a></td>
 						<td class="trip.stationOfficalDeparture"><?php echo $officialDeparture?></td>
 						<td class="trip.stationOfficalArrival"><?php echo $officialArrival;?></td>
 						<td class="trip.train">
 						<?php
 							if($station->stationName==$tripChapter->userFromStation->stationName){
 								echo $tripChapter->train->firstStation()->stationName . " - " . $tripChapter->train->lastStation()->stationName;
-								echo " (<a class=\"trainLink\" href=\"" . $tripChapter->train->officialLink . "\">" . $tripChapter->train->trainNumber . "</a>)";	
+								echo " (<a id=\"trainLink" . $stationIndex . "\" name=\"trainLink" . $stationIndex. "\" class=\"trainLink\" href=\"" . $tripChapter->train->officialLink . "\">" . $tripChapter->train->trainNumber . "</a>)";	
 							}
 						?>
 						</td>
