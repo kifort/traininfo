@@ -153,16 +153,16 @@ function showTimetable($tripCollection){
     <?php
     if(count($trip->tripChapters) > 1){
       $tripChapterIndex = 0;
-      $fromStationLinkId =  "fromStationLink" . $tripIndex . "_" . $tripChapterIndex;
-      $toStationLinkId =  "toStationLink" . $tripIndex . "_" . $tripChapterIndex;
-      $trainLinkId =  "trainLink" . $tripIndex . "_" . $tripChapterIndex;
       foreach ($trip->tripChapters as $tripChapter){
         $tripChapterIndex++;
-		echo "<tr class=\"tripChapter," . $evenOrOddTripCssClass . "\">";
+		$fromStationLinkId =  "fromStationLink" . $tripIndex . "_" . $tripChapterIndex;
+        $toStationLinkId =  "toStationLink" . $tripIndex . "_" . $tripChapterIndex;
+        $trainLinkId =  "trainLink" . $tripIndex . "_" . $tripChapterIndex;
+        echo "<tr class=\"tripChapter," . $evenOrOddTripCssClass . "\">";
 	?>
         <td class="tripChapterStation">
-            <span class="station"><a id="<?php echo $fromStationLinkId;?>" name="<?php echo $fromStationLinkId;?>" href="<?php echo $trip->tripChapter->userFromStation->officialLink?>">
-            <?php echo $tripChapter->userFromStation->stationName;?></a></span> - <span class="station"><a id="<?php echo $toStationLinkId;?>" name="<?php echo $toStationLinkId;?>" href="<?php echo $trip->tripChapter->userToStation->officialLink?>">
+            <span class="station"><a id="<?php echo $fromStationLinkId;?>" name="<?php echo $fromStationLinkId;?>" href="<?php echo $tripChapter->userFromStation->officialLink?>">
+            <?php echo $tripChapter->userFromStation->stationName;?></a></span> - <span class="station"><a id="<?php echo $toStationLinkId;?>" name="<?php echo $toStationLinkId;?>" href="<?php echo $tripChapter->userToStation->officialLink?>">
             <?php echo $tripChapter->userToStation->stationName;?></a></span>
         </td>
         <td class="officialTripChapterTime"><?php echo 
@@ -196,7 +196,7 @@ function showTimetable($tripCollection){
         <!--
         <?php echo "Vonat: " . $tripChapter->train->firstStation()->stationName . " - " . $tripChapter->train->lastStation()->stationName;?>
         --> 
-        Vonat: <a  id="<?php echo $trainStationLinkId;?>" name="<?php echo $trainStationLinkId;?>" class="trainLink" href="<?php echo $tripChapter->train->officialLink?>"><?php echo $tripChapter->train->trainNumber?></a>
+        Vonat: <a  id="<?php echo $trainLinkId;?>" name="<?php echo $trainLinkId;?>" class="trainLink" href="<?php echo $tripChapter->train->officialLink?>"><?php echo $tripChapter->train->trainNumber?></a>
         </td>
     </tr>
 <?php

@@ -3,9 +3,15 @@ package hu.traininfo.uitest.util;
 public enum HtmlId {
     FROM_STATION("fromStation", "Honnan:"),
     TO_STATION("toStation", "Hova:"),
+    VIA_STATION("viaStation", "Érintve:"),
     SEARCH_BTN("searchBtn", "Menetrend"),
     MAIN_TITLE("mainTitle", "main title"),
-    SEARCHTRIPINFO_LNK("tripinfoLink", "Részletek"),
+    FROM_STATION_LNK("fromStationLink", "initial station"),
+    TO_STATION_LNK("toStationLink", "final station"),
+    STATION_LNK("stationLink", "station"),
+    TRAIN_LNK("trainLink", "train"),
+    TRIPINFO_LNK("tripinfoLink", "Részletek"),
+    TIMETABLE_LNK("timetableLink", "Vissza az utak listájához"),
     SEARCH_LNK("searchLink", "Új keresés");
 
     private static final String UNKNOWN_HTML_ELEMENT_TEXT = "Unknown HTML element text: %s";

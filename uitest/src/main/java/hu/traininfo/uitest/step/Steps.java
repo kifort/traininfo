@@ -80,15 +80,26 @@ public class Steps {
         inputField.sendKeys(inputValue);
     }
 
+    @When("I clear field labelled $labelText")
+    public void clearTextFromField(String labelText) {
+        WebElement inputField = browser.findElement(By.id(HtmlId.getHtmlLabelIdForLabelText(labelText)));
+        inputField.clear();
+    }
+
     @When("I click on $buttonText button")
     @Alias("I click on $linkText link")
     public void click(String buttonOrLinkText) {
         browser.findElement(By.id(HtmlId.getHtmlLabelIdForLabelText(buttonOrLinkText))).click();
     }
 
-    @When("I click the $linkIndex. $linkText link")
-    public void click(Integer linkIndex, String buttonOrLinkText) {
-        browser.findElement(By.id(HtmlId.getHtmlLabelIdForLabelText(buttonOrLinkText) + linkIndex.toString())).click();
+    @When("I click the $linkIndex. $humanReadableLinkName link")
+    public void click(Integer linkIndex, String humanReadableLinkName) {
+        browser.findElement(By.id(HtmlId.getHtmlLabelIdForLabelText(humanReadableLinkName) + linkIndex.toString())).click();
+    }
+
+    @When("I click $linkIndex2. $humanReadableLinkName of the $linkIndex1. trip link")
+    public void click(Integer linkIndex2, String humanReadableLinkName, Integer linkIndex1) {
+        browser.findElement(By.id(HtmlId.getHtmlLabelIdForLabelText(humanReadableLinkName) + linkIndex1.toString() + "_" + linkIndex2.toString())).click();
     }
 
     @When("$expectedPage appeared")

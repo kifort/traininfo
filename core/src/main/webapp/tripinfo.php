@@ -97,6 +97,7 @@ if(!isset($trip)){
 		</tr>
     <?php
     	$stationIndex = 0;
+    	$trainIndex = 0;
     	foreach ($trip->tripChapters as $tripChapter){
 			$relevantStation = false;
 			
@@ -124,8 +125,9 @@ if(!isset($trip)){
 						<td class="trip.train">
 						<?php
 							if($station->stationName==$tripChapter->userFromStation->stationName){
+                                $trainIndex++;
 								echo $tripChapter->train->firstStation()->stationName . " - " . $tripChapter->train->lastStation()->stationName;
-								echo " (<a id=\"trainLink" . $stationIndex . "\" name=\"trainLink" . $stationIndex. "\" class=\"trainLink\" href=\"" . $tripChapter->train->officialLink . "\">" . $tripChapter->train->trainNumber . "</a>)";	
+								echo " (<a id=\"trainLink" . $trainIndex . "\" name=\"trainLink" . $trainIndex. "\" class=\"trainLink\" href=\"" . $tripChapter->train->officialLink . "\">" . $tripChapter->train->trainNumber . "</a>)";	
 							}
 						?>
 						</td>
