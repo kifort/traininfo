@@ -196,8 +196,8 @@ class TrainTimes{
 
 class TrainTime{
 // 	public $type; //TimetableType
-	public $arrival; //Time in minutes
-	public $departure; //Time in minutes
+	public $arrival; //Time string in format of hh:mm
+	public $departure; //Time string in format of hh:mm
 }
 
 class Tickets{

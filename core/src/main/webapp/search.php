@@ -20,47 +20,8 @@
  *
  * @author Tamás Kifor
  */
-require "script/php/init.php";
 
-$firephp->log("Fire PHP log test");
-
-//Test screen information existence in session
-if(!isset($_SESSION["screenWidth"])) {
-    header( "Location: " . $htmlBaseHref . "/index.php" );
-}
-
-//Reset previous search result if any 
-if(isset($_SESSION["tripCollection"])){
-    $firephp->log("Trip collection in session. Delete it.");
-    unset($_SESSION["tripCollection"]);
-}
-
-//Delete favourite if asked for
-if(isset($_POST["deleteFavouriteBtn"])){
-	if(isset($_COOKIE[$favouriteCookieId])){
-		$favourites = unserialize($_COOKIE[$favouriteCookieId]);
-		$favouriteTitle = $_POST["deleteFavouriteBtn"];
-		if(isset($favourites[$favouriteTitle])){
-			unset($favourites[$favouriteTitle]);
-			$_COOKIE[$favouriteCookieId] = serialize($favourites);
-			if(!setcookie($favouriteCookieId, serialize($favourites), strtotime( "+10 years" ), "/", "vonatinfo.kifor.hu")){
-				//$debugOut .= "Unable to update favourite cookie<br/>";
-			}
-		}
-	}
-	header( "Location: " . $htmlBaseHref . "/search.php" );
-}//if delete favourite
-
-//Store favourite search parameters in session
-if(isset($_POST["favouriteBtn"])){
-    $favourites = unserialize($_COOKIE[$favouriteCookieId]);
-    $favouriteTitle = $_POST["favouriteBtn"];
-    if(isset($favourites[$favouriteTitle])){
-        $_SESSION[search] = $favourites[$favouriteTitle];
-        header( "Location: " . $htmlBaseHref . "/timetable.php" );
-    }
-}//if search favourite
-
+require "script/php/init_search.php";
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -79,35 +40,30 @@ if(isset($_POST["favouriteBtn"])){
 <link rel="stylesheet" type="text/css" href="style/css/search.css"/>
 <!-- <link rel="stylesheet" media="handheld" type="text/css" href="style/css/search.css"/> -->
 <?php require "fragment/search_script_fragment.php";?>
-<?php
-$when = "Ma";
-$whatTime = "Egész nap";
-if(isset($_SESSION[search])){
-	$fromStation = $_SESSION[search]["fromStation"];
-	$toStation = $_SESSION[search]["toStation"];
-	$viaStation = $_SESSION[search]["viaStation"];
-	if(isset($_SESSION[search]["when"])){
-		$when = $_SESSION[search]["when"];
-	}
-	if(isset($_SESSION[search]["whatTime"])){
-		$whatTime = $_SESSION[search]["whatTime"];
-	}
-}//if search cached
-?>
 </head>
 <body>
     <h1>Vonat Információ</h1>
     <h2>Kindle e-könyv kiadás - v1.0</h2>
-    <form method="post" action="timetable.php">
+    <form method="post" action="search.php">
         <fieldset>
             <legend> Keresés </legend>
             <dl class="searchForm">
+                <?php
+                if(isset($errorMessages["search"])){
+                    echo "<dt>" . $errorMessages["search"] . "</dt><dd></dd>";
+                }
+                ?>
                 <dt>
                     <label for="fromStation">Honnan: </label>
                 </dt>
                 <dd>
                     <input id="fromStation" name="fromStation" type="text" role="textbox" placeholder="Honnan" maxlength="35"
                         autocomplete="off" aria-autocomplete="list" aria-haspopup="true" value="<?php echo $fromStation?>"></input>
+                    <?php
+                    if(isset($errorMessages["fromStation"])){
+                        echo $errorMessages["fromStation"];
+                    }
+                    ?>
                 </dd>
                 <dt>
                     <label for="toStation">Hova:</label>
@@ -115,6 +71,11 @@ if(isset($_SESSION[search])){
                 <dd>
                     <input id="toStation" name="toStation" type="text" role="textbox" placeholder="Hova" maxlength="35" autocomplete="off"
                         aria-autocomplete="list" aria-haspopup="true" value="<?php echo $toStation?>"></input>
+                    <?php
+                    if(isset($errorMessages["toStation"])){
+                        echo $errorMessages["toStation"];
+                    }
+                    ?>
                 </dd>
                 <dt>
                     <label for="viaStation">Érintve:</label>
@@ -158,7 +119,7 @@ if(isset($_SESSION[search])){
 		
     		foreach($favourites as $favouriteTitle=>$key){
                 echo '<dt><button id="favouriteBtn" name="favouriteBtn" type="submit" value="'.$favouriteTitle.'">'.$favouriteTitle.'</button></dt>';
-                echo '<dd class="deleteFavouriteBtn"><button id="deleteFavouriteBtn" name="deleteFavouriteBtn" type="submit" value="'.$favouriteTitle.'">Törlés</button></dd>';
+                echo '<dd class="deleteFavouriteBtn"><button id="delete" name="deleteFavouriteBtn" type="submit" value="'.$favouriteTitle.'">Törlés</button></dd>';
   		    }//foreach $favouriteTitle
   		    echo '</dl></fieldset></form>';
 		}//if favourite

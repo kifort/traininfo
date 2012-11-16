@@ -73,3 +73,7 @@ span.price {
 span.station {    
     white-space:nowrap;
 }
+
+tr.highlightedTrip {
+    background-color: #CC9999;
+}

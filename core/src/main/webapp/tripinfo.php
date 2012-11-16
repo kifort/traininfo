@@ -31,7 +31,7 @@ if(!isset($_SESSION["tripIndex"])){
 	header( "Location: " . $htmlBaseHref . "/timetable.php" );
 }
 
-$trip = $tripCollection->trips[$_SESSION["tripIndex"]];
+$trip = $tripCollection->trips[$_SESSION["tripIndex"]-1];
 if(isset($trip)){
 	$_SESSION["trip"] = $trip;
 }else{

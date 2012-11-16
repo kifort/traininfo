@@ -6,150 +6,150 @@ Scenario: check that application version is the same as expected to be tested
 Given that I navigate to vonatinfo.hu/version.php
 Then I should see the traininfo version under testing
 
-Scenario: check Menetrend button
+!-- Scenarios with via station and transfer
 
-Given that I navigate to vonatinfo.hu
-When I enter BUDAPEST* to field labelled Honnan:
-And I enter Esztergom to field labelled Hova:
-And I click on Menetrend button
-Then I should see timetable.php page within 2 seconds
-And I should see BUDAPEST* - Esztergom title in the main title field within 3 seconds
-
-Scenario: check navigation from timetable page back to search page
+Scenario: check Menetrend button with via station and transfer
 
 Given that I navigate to vonatinfo.hu
 When I enter Verőce to field labelled Honnan:
 And I enter Eger to field labelled Hova:
 And I enter Dabas to field labelled Érintve:
 And I click on Menetrend button
-And timetable.php appeared
-And I click on Új keresés link
+Then I should see timetable.php page within 2 seconds
+And I should see Verőce - Dabas - Eger title in the main title field within 3 seconds
+
+Scenario: check navigation from timetable page back to search page with via station and transfer
+
+Given that I navigate to timetable.php
+When I click on Új keresés link
 Then I should see search.php page within 2 seconds
 And I should see Verőce in field labelled Honnan:
 And I should see Eger in field labelled Hova:
 And I should see Dabas in field labelled Érintve:
 
-Scenario: check navigation from timetable page to trip info page
+Scenario: check navigation from timetable page to trip info page with via station and transfer
+
+Given that I navigate to timetable.php
+When I click the 1. Részletek link
+Then I should see tripinfo.php page within 2 seconds
+And I should see Verőce - Dabas - Eger title in the main title field within 3 seconds
+
+Scenario: check navigation from trip info page back to search page with via station and transfer
+
+Given that I navigate to tripinfo.php
+When I click on Új keresés link
+Then I should see search.php page within 2 seconds
+And I should see Verőce in field labelled Honnan:
+And I should see Eger in field labelled Hova:
+And I should see Dabas in field labelled Érintve:
+
+Scenario: check navigation from trip info page back to timetable page with via station and transfer
+
+Given that I navigate to tripinfo.php
+When I click on Vissza az utak listájához link
+Then I should see timetable.php page within 2 seconds
+And I should see Verőce - Dabas - Eger title in the main title field within 3 seconds
+
+Scenario: check navigation from trip info page to official station page with via station and transfer
+
+Given that I navigate to tripinfo.php
+When I click the 1. station link
+Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
+
+Scenario: check navigation from trip info page to official train page with via station and transfer
+
+Given that I navigate to tripinfo.php
+When I click the 1. train link
+Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/vt page within 2 seconds
+
+Scenario: check navigation from timetable page to official page of the initial station with via station and transfer
+
+Given that I navigate to timetable.php
+When I click 1. initial station of the 1. trip link
+Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
+
+Scenario: check navigation from timetable page to official page of the final station with via station and transfer
+
+Given that I navigate to timetable.php
+When I click 1. final station of the 1. trip link
+Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
+
+Scenario: check navigation from timetable page to official train page with transfer
+
+Given that I navigate to timetable.php
+When I click 1. train of the 1. trip link
+Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/vt page within 2 seconds
+
+!-- Scenarios without via station and transfer
+
+Scenario: check Menetrend button without via station and transfer
 
 Given that I navigate to vonatinfo.hu
 When I enter BUDAPEST* to field labelled Honnan:
 And I enter Esztergom to field labelled Hova:
 And I clear field labelled Érintve:
 And I click on Menetrend button
-And timetable.php appeared
-And I click the 1. Részletek link
-Then I should see tripinfo.php page within 2 seconds
+Then I should see timetable.php page within 2 seconds
 And I should see BUDAPEST* - Esztergom title in the main title field within 3 seconds
 
-Scenario: check navigation from trip info page back to search page
+Scenario: check navigation from timetable page back to search page without via station and transfer
 
-Given that I navigate to vonatinfo.hu
-When I enter BUDAPEST* to field labelled Honnan:
-And I enter Esztergom to field labelled Hova:
-And I click on Menetrend button
-And timetable.php appeared
-And I click the 1. Részletek link
-And tripinfo.php appeared
-And I click on Új keresés link
+Given that I navigate to timetable.php
+When I click on Új keresés link
 Then I should see search.php page within 2 seconds
 And I should see BUDAPEST* in field labelled Honnan:
 And I should see Esztergom in field labelled Hova:
+And I should see nothing in field labelled Érintve:
 
-Scenario: check navigation from trip info page back to timetable page
+Scenario: check navigation from timetable page to trip info page without via station and transfer
 
-Given that I navigate to vonatinfo.hu
-When I enter BUDAPEST* to field labelled Honnan:
-And I enter Esztergom to field labelled Hova:
-And I click on Menetrend button
-And timetable.php appeared
-And I click the 1. Részletek link
-And tripinfo.php appeared
-And I click on Vissza az utak listájához link
+Given that I navigate to timetable.php
+When I click the 1. Részletek link
+Then I should see tripinfo.php page within 2 seconds
+And I should see BUDAPEST* - Esztergom title in the main title field within 3 seconds
+
+Scenario: check navigation from trip info page back to search page withot via station and transfer
+
+Given that I navigate to tripinfo.php
+When I click on Új keresés link
+Then I should see search.php page within 2 seconds
+And I should see BUDAPEST* in field labelled Honnan:
+And I should see Esztergom in field labelled Hova:
+And I should see nothing in field labelled Érintve:
+
+Scenario: check navigation from trip info page back to timetable page with via station and transfer
+
+Given that I navigate to tripinfo.php
+When I click on Vissza az utak listájához link
 Then I should see timetable.php page within 2 seconds
+And I should see BUDAPEST* - Esztergom title in the main title field within 3 seconds
 
-Scenario: check navigation from trip info page to official station page
+Scenario: check navigation from trip info page to official station page without via station and transfer
 
-Given that I navigate to vonatinfo.hu
-When I enter BUDAPEST* to field labelled Honnan:
-And I enter Esztergom to field labelled Hova:
-And I click on Menetrend button
-And timetable.php appeared
-And I click the 1. Részletek link
-And tripinfo.php appeared
-And I click the 1. station link
+Given that I navigate to tripinfo.php
+When I click the 1. station link
 Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
 
-Scenario: check navigation from trip info page to official train page
+Scenario: check navigation from trip info page to official train page without via station and transfer
 
-Given that I navigate to vonatinfo.hu
-When I enter BUDAPEST* to field labelled Honnan:
-And I enter Esztergom to field labelled Hova:
-And I click on Menetrend button
-And timetable.php appeared
-And I click the 1. Részletek link
-And tripinfo.php appeared
-And I click the 1. train link
+Given that I navigate to tripinfo.php
+When I click the 1. train link
 Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/vt page within 2 seconds
 
-Scenario: check navigation from timetable page to official page of the initial station without transfer
+Scenario: check navigation from timetable page to official page of the initial station without via station and transfer
 
-Given that I navigate to vonatinfo.hu
-When I enter BUDAPEST* to field labelled Honnan:
-And I enter Esztergom to field labelled Hova:
-And I click on Menetrend button
-And timetable.php appeared
-And I click 1. initial station of the 1. trip link
+Given that I navigate to timetable.php
+When I click 1. initial station of the 1. trip link
 Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
 
-Scenario: check navigation from timetable page to official page of the final station without transfer
+Scenario: check navigation from timetable page to official page of the final station without via station and transfer
 
-Given that I navigate to vonatinfo.hu
-When I enter BUDAPEST* to field labelled Honnan:
-And I enter Esztergom to field labelled Hova:
-And I click on Menetrend button
-And timetable.php appeared
-And I click 1. final station of the 1. trip link
+Given that I navigate to timetable.php
+When I click 1. final station of the 1. trip link
 Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
 
 Scenario: check navigation from timetable page to official train page without transfer
 
-Given that I navigate to vonatinfo.hu
-When I enter BUDAPEST* to field labelled Honnan:
-And I enter Esztergom to field labelled Hova:
-And I click on Menetrend button
-And timetable.php appeared
-And I click 1. train of the 1. trip link
-Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/vt page within 2 seconds
-
-Scenario: check navigation from timetable page to official page of the initial station with transfer
-
-Given that I navigate to vonatinfo.hu
-When I enter Verőce to field labelled Honnan:
-And I enter Eger to field labelled Hova:
-And I enter Dabas to field labelled Érintve:
-And I click on Menetrend button
-And timetable.php appeared
-And I click 1. initial station of the 1. trip link
-Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
-
-Scenario: check navigation from timetable page to official page of the final station with transfer
-
-Given that I navigate to vonatinfo.hu
-When I enter Verőce to field labelled Honnan:
-And I enter Eger to field labelled Hova:
-And I enter Dabas to field labelled Érintve:
-And I click on Menetrend button
-And timetable.php appeared
-And I click 1. final station of the 1. trip link
-Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
-
-Scenario: check navigation from timetable page to official train page with transfer
-
-Given that I navigate to vonatinfo.hu
-When I enter Verőce to field labelled Honnan:
-And I enter Eger to field labelled Hova:
-And I enter Dabas to field labelled Érintve:
-And I click on Menetrend button
-And timetable.php appeared
-And I click 1. train of the 1. trip link
+Given that I navigate to timetable.php
+When I click 1. train of the 1. trip link
 Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/vt page within 2 seconds

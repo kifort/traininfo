@@ -128,6 +128,9 @@ public class Steps {
 
     @Then("I should see $expectedFieldValue in field labelled $humanReadableFieldName")
     public void checkFieldValue(String expectedFieldValue, String humanReadableFieldName) {
+        if (expectedFieldValue.equalsIgnoreCase("nothing")) {
+            expectedFieldValue = "";
+        }
         WebElement field = browser.findElement(By.id(HtmlId.getHtmlLabelIdForLabelText(humanReadableFieldName)));
         String actualFieldValue = field.getAttribute("value");
 
