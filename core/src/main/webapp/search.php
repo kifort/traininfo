@@ -43,7 +43,7 @@ require "script/php/init_search.php";
 </head>
 <body>
     <h1>Vonat Információ</h1>
-    <h2>Kindle e-könyv kiadás - v1.0</h2>
+    <h2>Kindle e-könyv kiadás - <?php echo $appVersion;?></h2>
     <form method="post" action="search.php">
         <fieldset>
             <legend> Keresés </legend>

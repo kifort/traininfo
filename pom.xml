@@ -31,7 +31,7 @@
 
     <groupId>hu.traininfo</groupId>
     <artifactId>traininfo</artifactId>
-    <version>0.4</version>
+    <version>0.5-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -49,7 +49,43 @@
         <ant.version>1.8.4</ant.version>
         <commons-net.version>3.1</commons-net.version>
         <maven-antrun.version>1.7</maven-antrun.version>
+        <maven-release.version>2.3.2</maven-release.version>
     </properties>
+
+    <scm>
+        <connection>scm:git:git@github.com:kifort/traininfo.git</connection>
+        <developerConnection>scm:git:git@github.com:kifort/traininfo.git</developerConnection>
+        <url>https://github.com/kifort/traininfo</url>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>public.vonatinfo.dnsdynamic.com</id>
+            <name>Traininfo public repository</name>
+            <releases>
+                <updatePolicy>daily</updatePolicy>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <updatePolicy>always</updatePolicy>
+                <enabled>true</enabled>
+            </snapshots>
+            <url>http://vonatinfo.dnsdynamic.com:8082/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>releases.vonatinfo.dnsdynamic.com</id>
+            <name>Traininfo release repository</name>
+            <url>http://vonatinfo.dnsdynamic.com:8082/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots.vonatinfo.dnsdynamic.com</id>
+            <name>Traininfo snapshot repository</name>
+            <url>http://vonatinfo.dnsdynamic.com:8082/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <dependencyManagement>
         <dependencies>
@@ -80,4 +116,25 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven-release.version}</version>
+                    <configuration>
+                        <tagBase>https://svn.apache.org/repos/asf/maven/components/releases</tagBase>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
