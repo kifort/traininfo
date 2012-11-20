@@ -21,7 +21,7 @@
  * @author Tamás Kifor
  */
 class TripCollection{
-	public $tripDate; //Date
+	public $tripDate; //DateTime
 	public $userFromStation; //Station
 	public $userViaStation; //Station
 	public $userToStation; //Station
@@ -101,7 +101,7 @@ class TripChapter{
 
 class Train{
     public $trainNumber; //Integer unique within one day
-    public $trainDate; //Date
+    public $trainDate; //DateTime
     public $trainType; //String - szemely, gyors, zonazo, ...
     public $highestCarriageClass; //CarriageClass
     public $otherInformation; //String - e.g. vaganyzar, felsovezetekszakadas, ...
@@ -110,7 +110,7 @@ class Train{
     public $officialLink; //URL
     
     public function getId(){
-    	return $trainNumber . " " . $trainDate;
+    	return $trainNumber . " " . $trainDate->format("Y.m.d");
     }
     
     public function distanceFromUserStation() {

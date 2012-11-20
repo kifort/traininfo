@@ -72,9 +72,9 @@ require "script/php/init_timetable.php";
 		?>
         </h1>
         <h2>
-            <span class="tripDate"> <?php echo $tripCollection->tripDate;?>
+            <span class="tripDate"> <?php echo $tripCollection->tripDate->format("Y.m.d");?>
             </span> <span class="tripDay"> <?php
-            echo utf8_encode(strftime("%A", date_timestamp_get(DateTime::createFromFormat("Y.m.d.", $tripCollection->tripDate))));
+            echo utf8_encode(strftime("%A", $tripCollection->tripDate->getTimestamp()));
             ?>
             </span>
         </h2>

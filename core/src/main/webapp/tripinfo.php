@@ -81,7 +81,7 @@ if(!isset($trip)){
 	?></h1>
 	<h2>
 	  <span class="tripDate">
-	    <?php echo $tripCollection->tripDate;?>
+	    <?php echo $tripCollection->tripDate->format("Y.m.d");?>
 	  </span>
 	  <span class="tripTime">
 	    <?php echo $trip->getBeginTime()->official->departure . " - " . $trip->getEndTime()->official->arrival;?>

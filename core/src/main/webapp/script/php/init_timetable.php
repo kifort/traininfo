@@ -45,7 +45,7 @@ $lastFinishedTripIndex = 0;
 $firstUpcomingTripIndex = count($tripCollection->trips) + 1;
 $highlightedTripIndex = 1;
 
-$tripDateYearsMonthsAndDays = explode(".", $tripCollection->tripDate);
+$tripDateYearsMonthsAndDays = explode(".", $tripCollection->tripDate->format("Y.m.d"));
 $currentTime = new DateTime();
 $tripIndex = 0;
 foreach ($tripCollection->trips as $trip){

@@ -108,8 +108,11 @@ function getTripCollection($searchParameters){
 		$tripCollection = new TripCollection();
 		
 		//Extract and set trip date from official timetable HTML
-		$tripCollection->tripDate = $officialSearchResultXPath->query("//div[@class='rrtftop']")->item(0)->nodeValue;
-		$tripCollection->tripDate = substr($tripCollection->tripDate, 0, stripos($tripCollection->tripDate, ",")) . ".";
+		$tripDateStr = $officialSearchResultXPath->query("//div[@class='rrtftop']")->item(0)->nodeValue;
+		$tripDateStr = substr($tripDateStr, 0, stripos($tripDateStr, ",")) . ".";
+		$tripDateYearsMonthsAndDays = explode(".", $tripDateStr);
+		$tripCollection->tripDate = new DateTime();
+		$tripCollection->tripDate->setDate($tripDateYearsMonthsAndDays[0], $tripDateYearsMonthsAndDays[1], $tripDateYearsMonthsAndDays[2]);
 		
 		//Set link to the offical webpage showing the searched timetable
 		$tripCollection->officialLink = "http://elvira.mav-start.hu/elvira.dll/xslvzs/uf? ". $officialSearchGetData;
