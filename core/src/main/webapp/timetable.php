@@ -88,7 +88,7 @@ require "script/php/init_timetable.php";
                 <th class="trip">Útrész</th>
                 <th class="trip">Hivatalos</th>
                 <th class="trip">Valós</th>
-                <th class="trip">Vonat</th>
+                <th class="trip">Késés</th>
             </tr>
             <?php if($lastFinishedTripIndex > 0){?>
             <tr id="pastTrips" name="pastTrips">
@@ -160,13 +160,11 @@ require "script/php/init_timetable.php";
             if(isset($trip->tickets->firstClass) && isset($trip->tickets->firstClass->price) && strlen(trim($trip->tickets->firstClass->price)) > 0){
 					echo "<span class=\"price\">1. oszt.: " . $trip->tickets->firstClass->price . " " . $trip->tickets->firstClass->priceUnit . "</span><br>";
 				}
-				echo "2. oszt.: " . $trip->tickets->secondClass->price . " " . $trip->tickets->secondClass->priceUnit;
-				if(count($trip->tripChapters) == 1){
-?> <br>Vonat: <a id="<?php echo $trainLinkId;?>" name="<?php echo $trainLinkId;?>" class="trainLink"
-                href="<?php echo $trip->tripChapters[0]->train->officialLink?>"><?php echo $trip->tripChapters[0]->train->trainNumber?> </a>
-                <?php
-                }//if exactly one trip chapter
-                ?>
+				echo "<span class=\"price\">2. oszt.: " . $trip->tickets->secondClass->price . " " . $trip->tickets->secondClass->priceUnit . "</span>";
+                $delay = $trip->getEndTime()->getDelay();
+                if(isset(delay)){
+                    echo "<br><span class=\"delay\">Késés: " . $delay . "</span>";
+                }?>
             </td>
             </tr>
             <?php
@@ -211,12 +209,13 @@ require "script/php/init_timetable.php";
            	}//if any actual or estimated time is given
        	?>
             </td>
-            <td class="train">
-                <!--
-                <?php echo "Vonat: " . $tripChapter->train->firstStation()->stationName . " - " . $tripChapter->train->lastStation()->stationName;?>
-                -->
-                Vonat: <a id="<?php echo $trainLinkId;?>" name="<?php echo $trainLinkId;?>" class="trainLink"
-                href="<?php echo $tripChapter->train->officialLink?>"><?php echo $tripChapter->train->trainNumber?> </a>
+            <td class="delay">
+                <?php
+                $delay = $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->getDelay();
+                if(isset(delay)){
+                    echo "<span class=\"delay\">Késés: " . $delay . "</span>";
+                }
+                ?>
             </td>
             </tr>
             <?php

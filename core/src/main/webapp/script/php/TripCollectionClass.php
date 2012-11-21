@@ -191,6 +191,20 @@ class TrainTimes{
 	public $official; //TrainTime
 	public $actual; //TrainTime
 	public $estimated; //TrainTime
+	
+	public function getDelay(){ //DateInterval
+	    $delay = null;
+	    if(isset($actual) && isset($actual->$arrival)){
+	        $delay = $official->diff($actual->$arrival);
+	    } else if(isset($estimated) && isset($estimated->$arrival)){
+	        $delay = $official->diff($estimated->$arrival);
+	    } else if(isset($actual) && isset($actual->$departure)){
+	        $delay = $official->diff($actual->$departure);
+	    } else if(isset($estimated) && isset($estimated->$departure)){
+	        $delay = $official->diff($estimated->$departure);
+	    }
+	    return $delay;
+	}
 }
 
 class TrainTime{

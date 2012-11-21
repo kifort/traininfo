@@ -381,7 +381,7 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
 			$officialTime = new TrainTime();
 			$officialTime->arrival = createDateTime($tripCollection->tripDate, trim($trainDetailsXPath->query("td[3]", $stationNode)->item(0)->nodeValue));
 			$officialTime->departure = createDateTime($tripCollection->tripDate, trim($trainDetailsXPath->query("td[4]", $stationNode)->item(0)->nodeValue));
-			//echo "officialTime->arrival: " . $officialTime->arrival . "<br/>";
+			//echo "officialTime->arrival: " . $officialTime->arrival->format("H:i") . "<br/>";
 			//echo "officialTime->departure: " . $officialTime->departure->format("H:i") . "<br/>";
 				
 			//Create actual time
