@@ -379,29 +379,29 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
 			
 			//Create official time
 			$officialTime = new TrainTime();
-			$officialTime->arrival = trim($trainDetailsXPath->query("td[3]", $stationNode)->item(0)->nodeValue);
-			$officialTime->departure = trim($trainDetailsXPath->query("td[4]", $stationNode)->item(0)->nodeValue);
+			$officialTime->arrival = createDateTime($tripCollection->tripDate, trim($trainDetailsXPath->query("td[3]", $stationNode)->item(0)->nodeValue));
+			$officialTime->departure = createDateTime($tripCollection->tripDate, trim($trainDetailsXPath->query("td[4]", $stationNode)->item(0)->nodeValue));
 			//echo "officialTime->arrival: " . $officialTime->arrival . "<br/>";
-			//echo "officialTime->departure: " . $officialTime->departure . "<br/>";
+			//echo "officialTime->departure: " . $officialTime->departure->format("H:i") . "<br/>";
 				
 			//Create actual time
 			$actualTime = new TrainTime();
 			$actualArrivalNode = $trainDetailsXPath->query("td[5]/span", $stationNode)->item(0);
 			if($actualArrivalNode){
-				$actualTime->arrival = trim($actualArrivalNode->nodeValue);
+				$actualTime->arrival = createDateTime($tripCollection->tripDate, trim($actualArrivalNode->nodeValue));
 				//Set the last station of the train that the train already accessed
 				$train->lastStation = $station;
 			}
 			$actualDepartureNode = $trainDetailsXPath->query("td[6]/span", $stationNode)->item(0);
 			if($actualDepartureNode){
-				$actualTime->departure = trim($actualDepartureNode->nodeValue);
+				$actualTime->departure = createDateTime($tripCollection->tripDate, trim($actualDepartureNode->nodeValue));
 			}
 			
 			//Create estimated time
 			$estimatedTime = new TrainTime();
 			$estimatedArrivalNode = $trainDetailsXPath->query("td[7]/span", $stationNode)->item(0);
 			if($estimatedArrivalNode){
-				$estimatedTime->arrival = trim($estimatedArrivalNode->nodeValue);
+				$estimatedTime->arrival = createDateTime($tripCollection->tripDate, trim($estimatedArrivalNode->nodeValue));
 				//Set the next station of the train
 				if($train->nextStation == null){
 					$train->nextStation = $station;
@@ -409,7 +409,7 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
 			}
 			$estimatedDepartureNode = $trainDetailsXPath->query("td[8]/span", $stationNode)->item(0);
 			if($estimatedDepartureNode){
-				$estimatedTime->departure = trim($estimatedDepartureNode->nodeValue);
+				$estimatedTime->departure = createDateTime($tripCollection->tripDate, trim($estimatedDepartureNode->nodeValue));
 			}
 			
 			//Add station to train
@@ -489,4 +489,11 @@ function getTrainServices($officialSearchResultXPath, $tripChapterNode){
 	}//foreach trainServiceNode
 	return $services;
 }//getTrainServices
+
+function createDateTime($tripDate, $timeStr){
+    $resultDateTime = clone $tripDate;
+    $minutesAndSeconds = explode(":", $timeStr);
+    $resultDateTime->setTime($minutesAndSeconds[0], $minutesAndSeconds[1]);
+    return $resultDateTime;
+}
 ?>

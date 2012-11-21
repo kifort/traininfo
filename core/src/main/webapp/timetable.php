@@ -134,25 +134,25 @@ require "script/php/init_timetable.php";
             }//if exactly one trip chapter
             ?>
             </td>
-            <td class="officialTripTime"><?php echo $trip->getBeginTime()->official->departure . " - " . $trip->getEndTime()->official->arrival;?>
+            <td class="officialTripTime"><?php echo $trip->getBeginTime()->official->departure->format("H:i") . " - " . $trip->getEndTime()->official->arrival->format("H:i");?>
             </td>
             <td class="realTripTime"><?php
             if(	isset($trip->getBeginTime()->actual->departure)|| isset($trip->getBeginTime()->estimated->departure) ||
 			isset($trip->getEndTime()->actual->arrival) || isset($trip->getEndTime()->estimated->arrival)){
 	        if(isset($trip->getBeginTime()->actual->departure)){
-				echo $trip->getBeginTime()->actual->departure . " - ";
+				echo $trip->getBeginTime()->actual->departure->format("H:i") . " - ";
 			} else if(isset($trip->getBeginTime()->estimated->departure)){
-				echo $trip->getBeginTime()->estimated->departure . " - ";
+				echo $trip->getBeginTime()->estimated->departure->format("H:i") . " - ";
 			} else {
-				echo $trip->getBeginTime()->official->departure . " - ";
+				echo $trip->getBeginTime()->official->departure->format("H:i") . " - ";
 			}
 
 			if(isset($trip->getEndTime()->actual->arrival)){
-				echo $trip->getEndTime()->actual->arrival;
+				echo $trip->getEndTime()->actual->arrival->format("H:i");
 			} else if(isset($trip->getEndTime()->estimated->arrival)){
-				echo $trip->getEndTime()->estimated->arrival;
+				echo $trip->getEndTime()->estimated->arrival->format("H:i");
 			} else {
-				echo $trip->getEndTime()->official->arrival;
+				echo $trip->getEndTime()->official->arrival->format("H:i");
 			}
 		}//if any actual or estimated time is given
 		?></td>
@@ -186,8 +186,8 @@ require "script/php/init_timetable.php";
                 </a> </span>
             </td>
             <td class="officialTripChapterTime"><?php echo 
-            $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->official->departure . " - " .
-            $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->official->arrival;?></td>
+            $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->official->departure->format("H:i") . " - " .
+            $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->official->arrival->format("H:i");?></td>
             <td class="realTripChapterTime"><?php
             if(	isset($tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->actual->departure) ||
     			isset($tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->estimated->departure) ||
@@ -195,18 +195,18 @@ require "script/php/init_timetable.php";
     			isset($tripChapter->train->timetable[$tripChapter->userToStation->stationName]->estimated->arrival)
     			){
     	       	if(isset($tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->actual->departure)){
-    	       		echo $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->actual->departure . " - ";
+    	       		echo $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->actual->departure->format("H:i") . " - ";
     	       	} else if(isset($tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->estimated->departure)){
-    	       		echo $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->estimated->departure . " - ";
+    	       		echo $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->estimated->departure->format("H:i") . " - ";
     	       	} else{
-    				echo $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->official->departure . " - ";
+    				echo $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->official->departure->format("H:i") . " - ";
     			}
     			if(isset($tripChapter->train->timetable[$tripChapter->userToStation->stationName]->actual->arrival)){
-    	       		echo $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->actual->arrival;
+    	       		echo $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->actual->arrival->format("H:i");
     	       	} else if(isset($tripChapter->train->timetable[$tripChapter->userToStation->stationName]->estimated->arrival)){
-    	       		echo $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->estimated->arrival;
+    	       		echo $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->estimated->arrival->format("H:i");
     	       	} else{
-    				echo $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->official->arrival;
+    				echo $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->official->arrival->format("H:i");
     			}
            	}//if any actual or estimated time is given
        	?>

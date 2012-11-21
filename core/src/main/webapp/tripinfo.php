@@ -84,7 +84,7 @@ if(!isset($trip)){
 	    <?php echo $tripCollection->tripDate->format("Y.m.d");?>
 	  </span>
 	  <span class="tripTime">
-	    <?php echo $trip->getBeginTime()->official->departure . " - " . $trip->getEndTime()->official->arrival;?>
+	    <?php echo $trip->getBeginTime()->official->departure->format("H:i") . " - " . $trip->getEndTime()->official->arrival->format("H:i");?>
 	  </span>
 	</h2>
 	<table border="1">
@@ -111,9 +111,9 @@ if(!isset($trip)){
 					//$firephp->log($tripChapter->train->timetable, "Train timetable");
 					if($station->stationName==$tripChapter->userFromStation->stationName){
 						$officialArrival = "";
-						$officialDeparture = $tripChapter->train->timetable[$station->stationName]->official->departure;
+						$officialDeparture = $tripChapter->train->timetable[$station->stationName]->official->departure->format("H:i");
 					}else{
-						$officialArrival = $tripChapter->train->timetable[$station->stationName]->official->arrival;
+						$officialArrival = $tripChapter->train->timetable[$station->stationName]->official->arrival->format("H:i");
 						$officialDeparture = "";
 					}
 ?>

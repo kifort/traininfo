@@ -35,13 +35,10 @@ class Trip{
 	public $tickets; //Tickets
 	
 	public function getBeginTime(){ //TrainTimes
-		//return $this->tripChapters[0]->train->timetables[$this->tripChapters[0]->userFromStation->stationName][TimetableType.OFFICIAL]->departure;
-		//return $this->tripChapters[0]->train->timetable[$this->tripChapters[0]->userFromStation->stationName]->official->departure;
 		return $this->tripChapters[0]->train->timetable[$this->tripChapters[0]->userFromStation->stationName];
 	}
 
 	public function getEndTime(){ //TrainTimes
-		//return $this->tripChapters[count($this->tripChapters)-1]->train->timetables[$this->tripChapters[count($this->tripChapters)-1]->userToStation->stationName][TimetableType.OFFICIAL]->arrival;
 		return $this->tripChapters[count($this->tripChapters)-1]->train->timetable[$this->tripChapters[count($this->tripChapters)-1]->userToStation->stationName];
 	}
 	
@@ -185,7 +182,9 @@ class StationDetails extends Station{
 
 class Distance{
 	public $distanceInKilometers; //Integer
-	public $distanceInMinutes; //Integer TODO add actual and estimated time distances
+	//TODO add actual and estimated time distances
+	//TODO use TimeInterval instead of Integer
+	public $distanceInMinutes; //Integer
 }
 
 class TrainTimes{
@@ -196,8 +195,8 @@ class TrainTimes{
 
 class TrainTime{
 // 	public $type; //TimetableType
-	public $arrival; //Time string in format of hh:mm
-	public $departure; //Time string in format of hh:mm
+	public $arrival; //DateTime
+	public $departure; //DateTime
 }
 
 class Tickets{

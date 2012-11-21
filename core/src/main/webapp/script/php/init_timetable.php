@@ -52,29 +52,21 @@ foreach ($tripCollection->trips as $trip){
 	   $tripIndex++;
 
 	   //Begin of the trip
-	   $tripBeginTimeStr = $trip->getBeginTime()->official->departure;
+	   $tripBeginTime = $trip->getBeginTime()->official->departure;
 	   if(isset($trip->getBeginTime()->actual->departure)){
-	       $tripBeginTimeStr = $trip->getBeginTime()->actual->departure;
+	       $tripBeginTime = $trip->getBeginTime()->actual->departure;
 	   } else if(isset($trip->getBeginTime()->estimated->departure)){
-	       $tripBeginTimeStr = $trip->getBeginTime()->estimated->departure;
+	       $tripBeginTime = $trip->getBeginTime()->estimated->departure;
 	   }
-	   $tripBeginTimeMinutesAndSeconds = explode(":", $tripBeginTimeStr);
-	   $tripBeginTime = new DateTime();
-	   $tripBeginTime->setTime($tripBeginTimeMinutesAndSeconds[0], $tripBeginTimeMinutesAndSeconds[1]);
-	   $tripBeginTime->setDate($tripDateYearsMonthsAndDays[0], $tripDateYearsMonthsAndDays[1], $tripDateYearsMonthsAndDays[2]);
 	   $tripBeginIntervalFromNow = $currentTime->diff($tripBeginTime);
 	   
 	   //End of the trip
-	   $tripEndTimeStr = $trip->getEndTime()->official->arrival;
+	   $tripEndTime = $trip->getEndTime()->official->arrival;
 	   if(isset($trip->getEndTime()->actual->arrival)){
-	       $tripEndTimeStr = $trip->getEndTime()->actual->arrival;
+	       $tripEndTime = $trip->getEndTime()->actual->arrival;
 	   } else if(isset($trip->getEndTime()->estimated->arrival)){
-	       $tripEndTimeStr = $trip->getEndTime()->estimated->arrival;
+	       $tripEndTime = $trip->getEndTime()->estimated->arrival;
 	   }
-	   $tripEndTimeMinutesAndSeconds = explode(":", $tripEndTimeStr);
-	   $tripEndTime = new DateTime();
-	   $tripEndTime->setTime($tripEndTimeMinutesAndSeconds[0], $tripEndTimeMinutesAndSeconds[1]);
-	   $tripEndTime->setDate($tripDateYearsMonthsAndDays[0], $tripDateYearsMonthsAndDays[1], $tripDateYearsMonthsAndDays[2]);
 	   $tripEndIntervalFromNow = $currentTime->diff($tripEndTime);
 	   
 	   //Upate indexes
