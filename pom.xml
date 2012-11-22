@@ -125,7 +125,8 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>${maven-release.version}</version>
                     <configuration>
-                        <tagBase>https://svn.apache.org/repos/asf/maven/components/releases</tagBase>
+<!--                         <localCheckout>true</localCheckout> -->
+<!--                         <pushChanges>false</pushChanges> -->
                     </configuration>
                 </plugin>
             </plugins>
