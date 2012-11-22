@@ -157,13 +157,14 @@ require "script/php/init_timetable.php";
 		}//if any actual or estimated time is given
 		?></td>
             <td class="tripPrice"><?php
-            if(isset($trip->tickets->firstClass) && isset($trip->tickets->firstClass->price) && strlen(trim($trip->tickets->firstClass->price)) > 0){
-					echo "<span class=\"price\">1. oszt.: " . $trip->tickets->firstClass->price . " " . $trip->tickets->firstClass->priceUnit . "</span><br>";
-				}
-				echo "<span class=\"price\">2. oszt.: " . $trip->tickets->secondClass->price . " " . $trip->tickets->secondClass->priceUnit . "</span>";
+                if(isset($trip->tickets->firstClass) && isset($trip->tickets->firstClass->price) && strlen(trim($trip->tickets->firstClass->price)) > 0){
+                    echo "<span class=\"price\">1. oszt.: " . $trip->tickets->firstClass->price . " " . $trip->tickets->firstClass->priceUnit . "</span><br>";
+                }
+                echo "<span class=\"price\">2. oszt.: " . $trip->tickets->secondClass->price . " " . $trip->tickets->secondClass->priceUnit . "</span>";
+				
                 $delay = $trip->getEndTime()->getDelay();
-                if(isset(delay)){
-                    echo "<br><span class=\"delay\">Késés: " . $delay . "</span>";
+                if(isset($delay)){
+                    echo "<br><span class=\"delay\">" . $delay->format("%i") . " perc késés</span>";
                 }?>
             </td>
             </tr>
@@ -212,8 +213,8 @@ require "script/php/init_timetable.php";
             <td class="delay">
                 <?php
                 $delay = $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->getDelay();
-                if(isset(delay)){
-                    echo "<span class=\"delay\">Késés: " . $delay . "</span>";
+                if(isset($delay)){
+                    echo "<span class=\"delay\">" . $delay->format("%i") . " perc késés</span>";
                 }
                 ?>
             </td>

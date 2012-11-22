@@ -194,15 +194,17 @@ class TrainTimes{
 	
 	public function getDelay(){ //DateInterval
 	    $delay = null;
-	    if(isset($actual) && isset($actual->$arrival)){
-	        $delay = $official->diff($actual->$arrival);
-	    } else if(isset($estimated) && isset($estimated->$arrival)){
-	        $delay = $official->diff($estimated->$arrival);
-	    } else if(isset($actual) && isset($actual->$departure)){
-	        $delay = $official->diff($actual->$departure);
-	    } else if(isset($estimated) && isset($estimated->$departure)){
-	        $delay = $official->diff($estimated->$departure);
+	    
+	    if(isset($this->actual) && isset($this->actual->arrival)){
+	        $delay = $this->official->arrival->diff($this->actual->arrival);
+	    } else if(isset($this->estimated) && isset($this->estimated->arrival)){
+	        $delay = $this->official->arrival->diff($this->estimated->arrival);
+	    } else if(isset($this->actual) && isset($this->actual->departure)){
+	        $delay = $this->official->departure->diff($this->actual->departure);
+	    } else if(isset($this->estimated) && isset($this->estimated->departure)){
+	        $delay = $this->official->departure->diff($this->estimated->departure);
 	    }
+	    
 	    return $delay;
 	}
 }

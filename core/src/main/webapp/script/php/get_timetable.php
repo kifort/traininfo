@@ -416,7 +416,7 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
 			array_push($train->stations, $station);
 			
 			//Set train times at the current station 
-			$trainTimes = new TrainTime();
+			$trainTimes = new TrainTimes();
 			$trainTimes->official = $officialTime;
 			$trainTimes->actual = $actualTime;
 			$trainTimes->estimated = $estimatedTime;
@@ -493,7 +493,7 @@ function getTrainServices($officialSearchResultXPath, $tripChapterNode){
 function createDateTime($tripDate, $timeStr){
     $resultDateTime = clone $tripDate;
     $minutesAndSeconds = explode(":", $timeStr);
-    $resultDateTime->setTime($minutesAndSeconds[0], $minutesAndSeconds[1]);
+    $resultDateTime->setTime(intval($minutesAndSeconds[0]), intval($minutesAndSeconds[1]));
     return $resultDateTime;
 }
 ?>
