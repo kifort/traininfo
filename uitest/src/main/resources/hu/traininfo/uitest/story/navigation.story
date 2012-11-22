@@ -74,12 +74,6 @@ Given that I navigate to timetable.php
 When I click 1. final station of the 1. trip link
 Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
 
-Scenario: check navigation from timetable page to official train page with transfer
-
-Given that I navigate to timetable.php
-When I click 1. train of the 1. trip link
-Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/vt page within 2 seconds
-
 !-- Scenarios without via station and transfer
 
 Scenario: check Menetrend button without via station and transfer
@@ -147,9 +141,3 @@ Scenario: check navigation from timetable page to official page of the final sta
 Given that I navigate to timetable.php
 When I click 1. final station of the 1. trip link
 Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
-
-Scenario: check navigation from timetable page to official train page without transfer
-
-Given that I navigate to timetable.php
-When I click 1. train of the 1. trip link
-Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/vt page within 2 seconds
