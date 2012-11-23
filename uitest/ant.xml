@@ -38,6 +38,7 @@
     </target>
     
     <target name="clear" depends="check-properties" if="properties-checked">
+        <echo message="Clear ${ftp-server}/${ftp-dir}"/>
         <ftp server="${ftp-server}" userid="${ftp-uname}" password="${ftp-pwd}" remotedir="${ftp-dir}" action="del">
             <fileset>
                 <exclude name="qa*" />
@@ -51,6 +52,7 @@
     </target>
 
     <target name="upload" depends="check-properties,clear" if="properties-checked">
+        <echo message="Upload to ${ftp-server}/${ftp-dir}"/>
         <unzip src="target/lib/traininfo.zip" dest="target/webapp" />
         <ftp server="${ftp-server}" userid="${ftp-uname}" password="${ftp-pwd}" remotedir="${ftp-dir}">
             <fileset dir="target/webapp" />
