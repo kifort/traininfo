@@ -125,7 +125,7 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>${maven-release.version}</version>
                     <configuration>
-                        <arguments>-Dqa=2 -Dftp-server=${env.ftp-server} -Dftp-uname=${env.ftp-uname} -Dftp-pwd=${env.ftp-pwd} -P appinstall</arguments>
+                        <!-- <arguments>-Dqa=2 -Dftp-server=${env.ftp-server} -Dftp-uname=${env.ftp-uname} -Dftp-pwd=${env.ftp-pwd} -P appinstall</arguments> -->
                         <tagNameFormat>v@{project.version}</tagNameFormat>
                         <!-- <localCheckout>true</localCheckout> -->
                         <!-- <pushChanges>false</pushChanges> -->
