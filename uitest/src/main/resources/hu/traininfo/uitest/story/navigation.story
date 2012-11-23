@@ -54,25 +54,25 @@ Scenario: check navigation from trip info page to official station page with via
 
 Given that I navigate to tripinfo.php
 When I click the 1. station link
-Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
+Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 3 seconds
 
 Scenario: check navigation from trip info page to official train page with via station and transfer
 
 Given that I navigate to tripinfo.php
 When I click the 1. train link
-Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/vt page within 2 seconds
+Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/vt page within 3 seconds
 
 Scenario: check navigation from timetable page to official page of the initial station with via station and transfer
 
 Given that I navigate to timetable.php
 When I click 1. initial station of the 1. trip link
-Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
+Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 3 seconds
 
 Scenario: check navigation from timetable page to official page of the final station with via station and transfer
 
 Given that I navigate to timetable.php
 When I click 1. final station of the 1. trip link
-Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
+Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 3 seconds
 
 !-- Scenarios without via station and transfer
 
@@ -122,22 +122,22 @@ Scenario: check navigation from trip info page to official station page without 
 
 Given that I navigate to tripinfo.php
 When I click the 1. station link
-Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
+Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 3 seconds
 
 Scenario: check navigation from trip info page to official train page without via station and transfer
 
 Given that I navigate to tripinfo.php
 When I click the 1. train link
-Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/vt page within 2 seconds
+Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/vt page within 3 seconds
 
 Scenario: check navigation from timetable page to official page of the initial station without via station and transfer
 
 Given that I navigate to timetable.php
 When I click 1. initial station of the 1. trip link
-Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
+Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 3 seconds
 
 Scenario: check navigation from timetable page to official page of the final station without via station and transfer
 
 Given that I navigate to timetable.php
 When I click 1. final station of the 1. trip link
-Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 2 seconds
+Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 3 seconds
