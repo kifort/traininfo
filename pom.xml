@@ -53,8 +53,8 @@
     </properties>
 
     <scm>
-        <connection>scm:git:git@github.com:kifort/traininfo.git</connection>
-        <developerConnection>scm:git:git@github.com:kifort/traininfo.git</developerConnection>
+        <connection>https://github.com/kifort/traininfo.git</connection>
+        <developerConnection>https://github.com/kifort/traininfo.git</developerConnection>
         <url>https://github.com/kifort/traininfo</url>
     </scm>
 
