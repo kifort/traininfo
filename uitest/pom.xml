@@ -108,6 +108,15 @@
             </properties>
         </profile>
         <profile>
+            <id>appuninstall</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <appuninstall>true</appuninstall>
+            </properties>
+        </profile>
+        <profile>
             <id>appinstall</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
