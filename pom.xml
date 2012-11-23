@@ -125,8 +125,10 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>${maven-release.version}</version>
                     <configuration>
-<!--                         <localCheckout>true</localCheckout> -->
-<!--                         <pushChanges>false</pushChanges> -->
+                        <arguments>-Dqa=2 -P appinstall</arguments>
+                        <tagNameFormat>v@{project.version}</tagNameFormat>
+                        <!-- <localCheckout>true</localCheckout> -->
+                        <!-- <pushChanges>false</pushChanges> -->
                     </configuration>
                 </plugin>
             </plugins>
