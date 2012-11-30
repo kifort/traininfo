@@ -25,7 +25,7 @@ require_once('script/php/version.php');
 setlocale(LC_ALL, 'hu_HU');
 session_start();
 $htmlBaseHref = "http://" . $_SERVER["SERVER_NAME"];
-$favouriteCookieId = 'TRAININFO_FAVOURITES';
+$favouriteCookieId = "TRAININFO_FAVOURITES";
 require_once('FirePHPCore/FirePHP.class.php');
 ob_start();
 $firephp = FirePHP::getInstance(true);

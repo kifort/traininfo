@@ -26,21 +26,21 @@ require "script/php/get_timetable.php";
 
 $errorMessages = array();
 
-$firephp->log("Fire PHP log test");
+//$firephp->log("Fire PHP log test");
 
 //Test screen information existence in session
 checkScreenInformation();
 
 //Delete favourite if asked for
 if(isset($_POST["deleteFavouriteBtn"])){
-    deleteFavourite();
+    deleteFavourite($favouriteCookieId);
 }
 
 $newSearch = false;
 
 //Get favourite search parameters from session if asked for
 if(isset($_POST["favouriteBtn"])){
-    $favouriteSearch = getFavouriteSearch();
+    $favouriteSearch = getFavouriteSearch($favouriteCookieId);
     if($favouriteSearch){
         $_SESSION["search"] = $favouriteSearch;
         $newSearch = true;
@@ -56,7 +56,7 @@ if(isset($_POST["searchBtn"])){
         //Store favourite in a cookie if the user asked for it
         if(isset($_POST["isFavourite"])){
             //$firephp->log("Favourite asked");
-            addFavourite();
+            addFavourite($favouriteCookieId);
         }
     }
 }
@@ -100,7 +100,7 @@ function checkScreenInformation(){
 }
 
 //Delete favourite if asked for
-function deleteFavourite(){
+function deleteFavourite($favouriteCookieId){
     if(isset($_COOKIE[$favouriteCookieId])){
         $favourites = unserialize($_COOKIE[$favouriteCookieId]);
         $favouriteTitle = $_POST["deleteFavouriteBtn"];
@@ -114,7 +114,7 @@ function deleteFavourite(){
     }
 }//deleteFavourite
 
-function getFavouriteSearch(){
+function getFavouriteSearch($favouriteCookieId){
     $favourites = unserialize($_COOKIE[$favouriteCookieId]);
     $favouriteTitle = $_POST["favouriteBtn"];
     if(isset($favourites[$favouriteTitle])){
@@ -146,7 +146,7 @@ function validateSearch(){
 }//validateSearch
 
 //Store favourite in a cookie
-function addFavourite(){
+function addFavourite($favouriteCookieId, $firephp){
     //Get an array of favourites from cookie or create a new one if it is not stored yet
     if(isset($_COOKIE[$favouriteCookieId])){
         $favourites = unserialize($_COOKIE[$favouriteCookieId]);
