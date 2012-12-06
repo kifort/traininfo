@@ -15,6 +15,7 @@ import org.jbehave.core.annotations.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -50,22 +51,25 @@ public class Steps {
     private static final int DEFAULT_TIMEOUT_IN_SECONDS = 10;
     // private static final String KINDLE_HTTP_USER_AGENT = "";
     private WebDriver browser;
+    private WebDriverBackedSelenium selenium;
     private String testEnv;
 
     @BeforeStories
     public void openBrowser() throws MalformedURLException {
         this.testEnv = System.getProperty("traininfo.test.env");
-        if (testEnv == null || testEnv.trim().length() == 0 || testEnv.equalsIgnoreCase("prod")) {
-            testEnv = "www";
+        if (this.testEnv == null || this.testEnv.trim().length() == 0 || this.testEnv.equalsIgnoreCase("prod")) {
+            this.testEnv = "www";
         }
 
-        browser = new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub"), DesiredCapabilities.firefox());
-        browser.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS);
+        this.browser = new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub"), DesiredCapabilities.firefox());
+        this.browser.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS);
 
         // FirefoxProfile profile = new FirefoxProfile();
         // profile.addAdditionalPreference("general.useragent.override",
         // KINDLE_HTTP_USER_AGENT);
         // WebDriver driver = new FirefoxDriver(profile);
+
+        this.selenium = new WebDriverBackedSelenium(this.browser, getWebpageUrl());
     }
 
     @Given("that I navigate to $webpage")
@@ -86,10 +90,15 @@ public class Steps {
         inputField.clear();
     }
 
+    @When("I select checkbox labelled $labelText")
+    public void selectCheckbox(String labelText) {
+        selenium.check(HtmlId.getHtmlLabelIdForLabelText(labelText));
+    }
+
     @When("I click on $buttonText button")
     @Alias("I click on $linkText link")
     public void click(String buttonOrLinkText) {
-        browser.findElement(By.id(HtmlId.getHtmlLabelIdForLabelText(buttonOrLinkText))).click();
+        browser.findElement(By.xpath("//*[text()='" + buttonOrLinkText + "']")).click();
     }
 
     @When("I click the $linkIndex. $humanReadableLinkName link")
@@ -149,6 +158,13 @@ public class Steps {
         Assert.assertEquals(humanReadableFieldName, expectedFieldText, actualFieldText);
     }
 
+    @Then("I should not see $buttonText button")
+    public void checkMissingButton(String buttonText) {
+        if (browser.findElements(By.xpath("//*[text()='" + buttonText + "']")).size() > 0) {
+            Assert.fail(buttonText + " shouldn't exist");
+        }
+    }
+
     @Then("I should see the traininfo version under testing")
     public void checkVersion() {
         Assert.assertEquals("version", System.getProperty("traininfo.version"), browser.findElement(By.tagName("body")).getText());
@@ -159,6 +175,10 @@ public class Steps {
         if (browser != null) {
             browser.quit();
         }
+    }
+
+    private String getWebpageUrl() {
+        return getWebpageUrl(null);
     }
 
     private String getWebpageUrl(String webpage) {

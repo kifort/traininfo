@@ -141,3 +141,30 @@ Scenario: check navigation from timetable page to official page of the final sta
 Given that I navigate to timetable.php
 When I click 1. final station of the 1. trip link
 Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 3 seconds
+
+!-- Scenarios for favourit with via station and transfer
+
+Scenario: check favourite creation with via station and transfer
+
+Given that I navigate to vonatinfo.hu
+When I enter Verőce to field labelled Honnan:
+And I enter Eger to field labelled Hova:
+And I enter Dabas to field labelled Érintve:
+And I select checkbox labelled Kerüljön a kedvencek közé:
+And I click on Menetrend button
+Then I should see timetable.php page within 2 seconds
+And I should see Verőce - Dabas - Eger title in the main title field within 3 seconds
+
+Scenario: check favourite listing with via station and transfer
+Given that I navigate to timetable.php
+When I click on Új keresés link
+Then I should see search.php page within 2 seconds
+When I click on Ma: Verőce - Dabas - Eger button
+Then I should see timetable.php page within 2 seconds
+And I should see Verőce - Dabas - Eger title in the main title field within 3 seconds
+
+Scenario: check favourite erasure with via station and transfer
+Given that I navigate to search.php
+When I click on Törlés button
+Then I should see search.php page within 2 seconds
+And I should not see Ma: Verőce - Dabas - Eger button

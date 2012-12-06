@@ -12,7 +12,9 @@ public enum HtmlId {
     TRAIN_LNK("trainLink", "train"),
     TRIPINFO_LNK("tripinfoLink", "Részletek"),
     TIMETABLE_LNK("timetableLink", "Vissza az utak listájához"),
-    SEARCH_LNK("searchLink", "Új keresés");
+    SEARCH_LNK("searchLink", "Új keresés"),
+    ADD_FAVOURITE_CHECKBOX("isFavourite", "Kerüljön a kedvencek közé:"),
+    DELETE_FAVOURITE_BTN("delete", "Törlés");
 
     private static final String UNKNOWN_HTML_ELEMENT_TEXT = "Unknown HTML element text: %s";
 
