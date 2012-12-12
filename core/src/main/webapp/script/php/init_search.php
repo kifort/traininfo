@@ -74,6 +74,7 @@ if($newSearch){
     } else if(count($tripCollection->trips) == 0){
         $errorMessages["search"] = "Sikertelen keresés";
     } else{
+        //$firephp->log($tripCollection, "tripCollection");
         header( "Location: " . $htmlBaseHref . "/timetable.php" );
     }
 } else{

@@ -118,7 +118,7 @@ function getTripCollection($searchParameters){
 		$tripCollection->officialLink = "http://elvira.mav-start.hu/elvira.dll/xslvzs/uf? ". $officialSearchGetData;
 		
 		//Set HTML of the offical webpage showing the searched timetable
-		$tripCollection->htmlContent = $officialSearchResult["content"];
+		//$tripCollection->htmlContent = $officialSearchResult["content"];
 		
 		//Set first station of trip
 		$tripCollection->userFromStation = getCachedStation($searchParameters["fromStation"], $stationCache);
@@ -181,10 +181,11 @@ function getTripCollection($searchParameters){
 			//Iterate over trip chapters from official timetable HTML
 			$tripChapterNodes = $officialSearchResultXPath->query("//*[@id='info".$tripIndex++."']/table/tbody/tr");
 			foreach($tripChapterNodes as $tripChapterNode) {
-				//echo "tripChapterNode: " . $officialSearchResultDom->saveXML($tripChapterNode) . "<br/>";
+			    //$firephp->log($officialSearchResultDom->saveXML($tripChapterNode), "tripChapterNode");
 				
 				//Extract the name of the station from trip chapter details HTML
 				$stationName = trim($officialSearchResultXPath->query("td[1]/a", $tripChapterNode)->item(0)->nodeValue);
+				//$firephp->log($stationName, "stationName");
 				
 				//Initialize station
 				$station = getCachedStation($stationName, $stationCache);
@@ -196,15 +197,16 @@ function getTripCollection($searchParameters){
 				//TODO get station details if needed
 				
 				//Extract the link to the train of trip chapter from official timetable HTML
-				$tripChapterTrainNodeList = $officialSearchResultXPath->query("td[6]/a", $tripChapterNode);
+				$tripChapterTrainNodeList = $officialSearchResultXPath->query("td[5]/a", $tripChapterNode);
 				$tripChapterTrainNode = $tripChapterTrainNodeList->item(0);
+				//$firephp->log($officialSearchResultDom->saveXML($tripChapterTrainNode), "tripChapterTrainNode");
 				
 				//Get trip chapter type (train or local transportation) from the link to the train
 				if($tripChapterTrainNode){
 					$tripChapterType = getTripChapterType($tripChapterTrainNode, $officialSearchResultXPath);
 				}
 				
-				//echo "tripChapterType2: " . $tripChapterType . "<br>";
+				//$firephp->log($tripChapterType, "tripChapterType");
 				if($tripChapterType == "FROM_STATION_WITH_TRAIN"){
 					//Set type of the next row in trip details
 					$tripChapterType = "TO_STATION_WITH_TRAIN";
@@ -307,7 +309,7 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
 	
 	//Set highest carriage class from trip chapter HTML
 	$train->highestCarriageClass = 1;
-	$secondClassImage = $officialSearchResultXPath->evaluate("count(td[7]/img[@src='http://elvira.mav-start.hu/fontgif/36.gif'])", $tripChapterNode);
+	$secondClassImage = $officialSearchResultXPath->evaluate("count(td[6]/img[@src='http://elvira.mav-start.hu/fontgif/36.gif'])", $tripChapterNode);
 	if($secondClassImage == "1"){
 		$train->highestCarriageClass = 2;
 	}
@@ -315,7 +317,7 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
 	
 	//Set link to the offical webpage showing the train details from trip chapter HTML
 	//echo $tripChapterNode.C14N() . "<br/>";
-	$train->officialLink = "http://elvira.mav-start.hu/elvira.dll/xslvzs/". $officialSearchResultXPath->query("td[6]/a/@href", $tripChapterNode)->item(0)->nodeValue;
+	$train->officialLink = "http://elvira.mav-start.hu/elvira.dll/xslvzs/". $officialSearchResultXPath->query("td[5]/a/@href", $tripChapterNode)->item(0)->nodeValue;
 	//echo "train->officialLink: _" . $train->officialLink . "_<br/>";
 	
 	//TODO set $train->otherInformation
@@ -344,7 +346,7 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
 		$trainDetailsXPath = new DOMXpath($trainDetailsDom);
 	
 		//Set HTML of the offical webpage showing the train information
-		$train->htmlContent = $trainDetailsHtml;
+		//$train->htmlContent = $trainDetailsHtml;
 	
 		//Set train type from official train information HTML
 		$train->trainType = trim($trainDetailsXPath->query("//*[@id='tul']/h2/span")->item(0)->nodeValue);
