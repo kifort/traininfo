@@ -49,40 +49,40 @@ $tripDateYearsMonthsAndDays = explode(".", $tripCollection->tripDate->format("Y.
 $currentTime = new DateTime();
 $tripIndex = 0;
 foreach ($tripCollection->trips as $trip){
-	   $tripIndex++;
+    $tripIndex++;
 
-	   //Begin of the trip
-	   $tripBeginTime = $trip->getBeginTime()->official->departure;
-	   if(isset($trip->getBeginTime()->actual->departure)){
-	       $tripBeginTime = $trip->getBeginTime()->actual->departure;
-	   } else if(isset($trip->getBeginTime()->estimated->departure)){
-	       $tripBeginTime = $trip->getBeginTime()->estimated->departure;
-	   }
-	   $tripBeginIntervalFromNow = $currentTime->diff($tripBeginTime);
-	   
-	   //End of the trip
-	   $tripEndTime = $trip->getEndTime()->official->arrival;
-	   if(isset($trip->getEndTime()->actual->arrival)){
-	       $tripEndTime = $trip->getEndTime()->actual->arrival;
-	   } else if(isset($trip->getEndTime()->estimated->arrival)){
-	       $tripEndTime = $trip->getEndTime()->estimated->arrival;
-	   }
-	   $tripEndIntervalFromNow = $currentTime->diff($tripEndTime);
-	   
-	   //Upate indexes
-	   //If trip has already been finished
-	   if($tripEndIntervalFromNow->format("%r%i")<=0){
-	       $lastFinishedTripIndex = $tripIndex;
-	   }
-	   
-	   //If trip has already been started
-	   if($tripBeginIntervalFromNow->format("%r%i")>0){
-	       $firstUpcomingTripIndex = $tripIndex;
-	       $highlightedTripIndex = $tripIndex;
-	       break;
-	   }
+    //Begin of the trip
+    $tripBeginTime = $trip->getBeginTime()->official->departure;
+    if(isset($trip->getBeginTime()->actual->departure)){
+        $tripBeginTime = $trip->getBeginTime()->actual->departure;
+    } else if(isset($trip->getBeginTime()->estimated->departure)){
+        $tripBeginTime = $trip->getBeginTime()->estimated->departure;
+    }
+    $tripBeginIntervalFromNow = $currentTime->diff($tripBeginTime);
+
+    //End of the trip
+    $tripEndTime = $trip->getEndTime()->official->arrival;
+    if(isset($trip->getEndTime()->actual->arrival)){
+        $tripEndTime = $trip->getEndTime()->actual->arrival;
+    } else if(isset($trip->getEndTime()->estimated->arrival)){
+        $tripEndTime = $trip->getEndTime()->estimated->arrival;
+    }
+    $tripEndIntervalFromNow = $currentTime->diff($tripEndTime);
+
+    //Upate indexes
+    //If trip has already been finished
+    if($tripEndIntervalFromNow->format("%r%i")<=0){
+        $lastFinishedTripIndex = $tripIndex;
+    }
+
+    //If trip has already been started
+    if($tripBeginIntervalFromNow->format("%r%i")>0){
+        $firstUpcomingTripIndex = $tripIndex;
+        $highlightedTripIndex = $tripIndex;
+        break;
+    }
 }//foreach trip
-    
+
 if(isset($_SESSION["tripIndex"])){
     $highlightedTripIndex = $_SESSION["tripIndex"];
 }
