@@ -228,5 +228,6 @@ require "script/php/init_timetable.php";
 ?>
         </table>
     </div>
+<?php include "script/php/footer.php";?>
 </body>
 </html>

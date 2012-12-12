@@ -141,7 +141,8 @@ if(!isset($trip)){
 		}//foreach tripChapter
 ?>
     </table>
-  </div>    
+  </div>
+<?php include "script/php/footer.php";?>
 </body>
 </html>
     

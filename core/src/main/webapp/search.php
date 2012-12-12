@@ -43,7 +43,7 @@ require "script/php/init_search.php";
 </head>
 <body>
     <h1>Vonat Információ</h1>
-    <h2>Kindle e-könyv kiadás - <?php echo $appVersion;?></h2>
+    <h2>Kindle e-könyv kiadás</h2>
     <form method="post" action="search.php">
         <fieldset>
             <legend> Keresés </legend>
@@ -125,30 +125,7 @@ require "script/php/init_search.php";
 		}//if favourite
 	}//if favourite cookie
 	
-	//Test Kindle device and Apple WebKit browser
-	$firephp->log($_SERVER["HTTP_USER_AGENT"], "HTTP_USER_AGENT");
-	if(!strpos($_SERVER["HTTP_USER_AGENT"], "AppleWebKit") || !strpos($_SERVER["HTTP_USER_AGENT"], "Kindle")){
-		echo "<br><hr/>
-				<p>
-				Ez a menetrend kereső Kindle elektronikus könyvekre lett kitalálva. Android-on javaslom a
-				<a href=\"https://play.google.com/store/apps/details?id=app.mav.menetrend&hl=hu\">Menetrend Droid</a>-ot vagy az
-				<a href=\"https://play.google.com/store/apps/details?id=hu.porcica.mav.menetrend&hl=hu\">AZ Menetrend - MÁV</a>-ot, iOS-en (iPhone, iPad, ...) az
-				<a href=\"https://itunes.apple.com/app/id423649086\">iMenetrend</a>-et, nem mobil eszközökre pedig ott a jó öreg
-				<a href=\"http://elvira.mav-start.hu\">ELVIRA</a>.<br/>
-				<p>";
-	}//else not kindle
-
-	//Test browser capabilities
-	//$firephp->log($_SESSION["screenWidth"], "screenWidth");
-	//$firephp->log($_SESSION["screenHeight"], "screenHeight");
-	//echo $_SESSION["screenWidth"] . " x ". $_SESSION["screenHeight"];
-	
-	//$browser = get_browser(null, true); //browscap.ini not configured for get_browser function
-	//$firephp->log($browser, "browser");
-	
-	// include_once "wurfl_config_xml.php"; //WURFL has couple of bugs :(
-	// $requestingDevice = $wurflManager->getDeviceForHttpRequest($_SERVER);
-	// $wurflInfo = $wurflManager->getWURFLInfo();
+	include "script/php/footer.php";	
 ?>
 </body>
 </html>
