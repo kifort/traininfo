@@ -182,7 +182,7 @@ function getTripCollection($searchParameters){
             //Iterate over trip chapter headers from official timetable HTML
             $tripChapterTrainHeaderIndex = 6;
             //$firephp->log("tripChapterHeaders");
-            $tripChapterHeaderNodes = $officialSearchResultXPath->query("//*[@id='info".$tripIndex++."']/table/thead/tr/th");
+            $tripChapterHeaderNodes = $officialSearchResultXPath->query("//*[@id='info".$tripIndex."']/table/thead/tr/th");
             $tripChapterHeaderIndex = 1;
             foreach($tripChapterHeaderNodes as $tripChapterHeaderNode) {
                 //Extract the name of the header from trip chapter header HTML
@@ -197,7 +197,7 @@ function getTripCollection($searchParameters){
             //$firephp->log($tripChapterTrainHeaderIndex, "tripChapterTrainHeaderIndex");
 
             //Iterate over trip chapters from official timetable HTML
-            $tripChapterNodes = $officialSearchResultXPath->query("//*[@id='info".$tripIndex++."']/table/tbody/tr");
+            $tripChapterNodes = $officialSearchResultXPath->query("//*[@id='info".$tripIndex."']/table/tbody/tr");
             foreach($tripChapterNodes as $tripChapterNode) {
                 //$firephp->log($officialSearchResultDom->saveXML($tripChapterNode), "tripChapterNode");
 
@@ -269,6 +269,8 @@ function getTripCollection($searchParameters){
              
             array_push($tripCollection->trips, $trip);
             //$firephp->log($trip, "trip");
+            //$firephp->log($tripIndex, "tripIndex");
+            $tripIndex++;
         }//foreach tripNode
     }//if search ok
     else {
