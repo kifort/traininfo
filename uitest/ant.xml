@@ -41,12 +41,12 @@
         <echo message="Clear ${ftp-server}/${ftp-dir}"/>
         <ftp server="${ftp-server}" userid="${ftp-uname}" password="${ftp-pwd}" remotedir="${ftp-dir}" action="del">
             <fileset>
-                <exclude name="qa*" />
+                <exclude name="qa*/*" />
             </fileset>
         </ftp>
         <ftp server="${ftp-server}" userid="${ftp-uname}" password="${ftp-pwd}" remotedir="${ftp-dir}" action="rmdir">
             <fileset>
-                <exclude name="qa*" />
+                <exclude name="qa*/*" />
             </fileset>
         </ftp>
     </target>
