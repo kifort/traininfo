@@ -52,31 +52,46 @@ foreach ($tripCollection->trips as $trip){
     $tripIndex++;
 
     //Begin of the trip
-    $tripBeginTime = $trip->getBeginTime()->official->departure;
-    if(isset($trip->getBeginTime()->actual->departure)){
-        $tripBeginTime = $trip->getBeginTime()->actual->departure;
-    } else if(isset($trip->getBeginTime()->estimated->departure)){
-        $tripBeginTime = $trip->getBeginTime()->estimated->departure;
+    $tripBeginTime = $trip->getBeginTime();
+    if(isset($tripBeginTime)){
+        $tripBeginTime = $tripBeginTime->official->departure;
+        $firephp->log($tripBeginTime, "tripBeginTime");
+        if(isset($trip->getBeginTime()->actual->departure)){
+            $tripBeginTime = $trip->getBeginTime()->actual->departure;
+        } else if(isset($trip->getBeginTime()->estimated->departure)){
+            $tripBeginTime = $trip->getBeginTime()->estimated->departure;
+        }
+        if(isset($tripBeginTime)){
+            $tripBeginIntervalFromNow = $currentTime->diff($tripBeginTime);
+        }
+        //         else{ $firephp->log("tripBeginTime is not set"); }
     }
-    $tripBeginIntervalFromNow = $currentTime->diff($tripBeginTime);
+    //     else{ $firephp->log("trip->getBeginTime() is not set"); }
 
     //End of the trip
-    $tripEndTime = $trip->getEndTime()->official->arrival;
-    if(isset($trip->getEndTime()->actual->arrival)){
-        $tripEndTime = $trip->getEndTime()->actual->arrival;
-    } else if(isset($trip->getEndTime()->estimated->arrival)){
-        $tripEndTime = $trip->getEndTime()->estimated->arrival;
+    $tripEndTime = $trip->getEndTime();
+    if(isset($tripEndTime)){
+        $tripEndTime = $tripEndTime->official->arrival;
+        if(isset($trip->getEndTime()->actual->arrival)){
+            $tripEndTime = $trip->getEndTime()->actual->arrival;
+        } else if(isset($trip->getEndTime()->estimated->arrival)){
+            $tripEndTime = $trip->getEndTime()->estimated->arrival;
+        }
+        if(isset($tripEndTime)){
+            $tripEndIntervalFromNow = $currentTime->diff($tripEndTime);
+        }
+        //         else{ $firephp->log("tripEndTime is not set"); }
     }
-    $tripEndIntervalFromNow = $currentTime->diff($tripEndTime);
+    //     else{ $firephp->log("tripEndTime is not set"); }
 
     //Upate indexes
     //If trip has already been finished
-    if($tripEndIntervalFromNow->format("%r%i")<=0){
+    if(isset($tripEndIntervalFromNow) && $tripEndIntervalFromNow->format("%r%i")<=0){
         $lastFinishedTripIndex = $tripIndex;
     }
 
     //If trip has already been started
-    if($tripBeginIntervalFromNow->format("%r%i")>0){
+    if(isset($tripBeginIntervalFromNow) && $tripBeginIntervalFromNow->format("%r%i")>0){
         $firstUpcomingTripIndex = $tripIndex;
         $highlightedTripIndex = $tripIndex;
         break;
@@ -87,9 +102,9 @@ if(isset($_SESSION["tripIndex"])){
     $highlightedTripIndex = $_SESSION["tripIndex"];
 }
 
-$firephp->log($lastFinishedTripIndex, "lastFinishedTripIndex");
-$firephp->log($firstUpcomingTripIndex, "firstUpcomingTripIndex");
-$firephp->log($highlightedTripIndex, "highlightedTripIndex");
+//$firephp->log($lastFinishedTripIndex, "lastFinishedTripIndex");
+//$firephp->log($firstUpcomingTripIndex, "firstUpcomingTripIndex");
+//$firephp->log($highlightedTripIndex, "highlightedTripIndex");
 
 // $tripSections = true;
 // if($lastFinishedTripIndex == 0 && $firstUpcomingTripIndex > count($tripCollection->trips)){

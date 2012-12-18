@@ -145,13 +145,14 @@ function getTripCollection($searchParameters){
         $tripNodes = $officialSearchResultXPath->query("//*[@id='timetable']/table/tbody/tr[@style]");
         $tripIndex = 1;
         foreach($tripNodes as $tripNode) {
+            //$firephp->log($officialSearchResultDom->saveXML($tripNode), "tripNode");
             //Initialize trip
             $trip = new Trip();
-            	
+             
             //Extract trip trip prices from HTML
             $trip->tickets = new Tickets();
             $firstClassPriceNode = $officialSearchResultXPath->query("td[7]/text()", $tripNode)->item(0);
-            //If nodeValue is two charavter long, it means some special characters in the official HTML that looks like space, but it isn't
+            //If nodeValue is two character long, it means some special characters in the official HTML that looks like space, but it isn't
             if(isset($firstClassPriceNode) && isset($firstClassPriceNode->nodeValue) && strlen($firstClassPriceNode->nodeValue>2)){
                 $trip->tickets->firstClass = new Ticket();
                 $trip->tickets->firstClass->discount = $discount;
@@ -162,7 +163,7 @@ function getTripCollection($searchParameters){
                     $trip->tickets->firstClass->priceUnit = $priceAndUnit[1];
                 }//if price and price unit
             }//if firstClassPriceNode
-            	
+             
             $secondClassPriceNode = $officialSearchResultXPath->query("td[8]/text()", $tripNode)->item(0);
             if(isset($secondClassPriceNode) && isset($secondClassPriceNode->nodeValue) && strlen($secondClassPriceNode->nodeValue>2)){
                 $trip->tickets->secondClass = new Ticket();
@@ -177,7 +178,24 @@ function getTripCollection($searchParameters){
 
             //Initialize array containing the trip chapters
             $trip->tripChapters = array();
-            	
+
+            //Iterate over trip chapter headers from official timetable HTML
+            $tripChapterTrainHeaderIndex = 6;
+            //$firephp->log("tripChapterHeaders");
+            $tripChapterHeaderNodes = $officialSearchResultXPath->query("//*[@id='info".$tripIndex++."']/table/thead/tr/th");
+            $tripChapterHeaderIndex = 1;
+            foreach($tripChapterHeaderNodes as $tripChapterHeaderNode) {
+                //Extract the name of the header from trip chapter header HTML
+                $tripChapterHeaderName = trim($tripChapterHeaderNode->nodeValue);
+                //$firephp->log($tripChapterHeaderIndex, "tripChapterHeaderIndex");
+                //$firephp->log($tripChapterHeaderName, "tripChapterHeaderName");
+                if(strcmp($tripChapterHeaderName, "Vonat") == 0){
+                    $tripChapterTrainHeaderIndex = $tripChapterHeaderIndex;
+                }
+                $tripChapterHeaderIndex++;
+            }//foreach tripChapterHeaderNode
+            //$firephp->log($tripChapterTrainHeaderIndex, "tripChapterTrainHeaderIndex");
+
             //Iterate over trip chapters from official timetable HTML
             $tripChapterNodes = $officialSearchResultXPath->query("//*[@id='info".$tripIndex++."']/table/tbody/tr");
             foreach($tripChapterNodes as $tripChapterNode) {
@@ -197,7 +215,7 @@ function getTripCollection($searchParameters){
                 //TODO get station details if needed
 
                 //Extract the link to the train of trip chapter from official timetable HTML
-                $tripChapterTrainNodeList = $officialSearchResultXPath->query("td[5]/a", $tripChapterNode);
+                $tripChapterTrainNodeList = $officialSearchResultXPath->query("td[".$tripChapterTrainHeaderIndex."]/a", $tripChapterNode);
                 $tripChapterTrainNode = $tripChapterTrainNodeList->item(0);
                 //$firephp->log($officialSearchResultDom->saveXML($tripChapterTrainNode), "tripChapterTrainNode");
 
@@ -210,30 +228,30 @@ function getTripCollection($searchParameters){
                 if($tripChapterType == "FROM_STATION_WITH_TRAIN"){
                     //Set type of the next row in trip details
                     $tripChapterType = "TO_STATION_WITH_TRAIN";
-                    	
+                     
                     //Create new trip chapter
                     $tripChapter = new TripChapter();
-                    	
+                     
                     //Set first station of trip trip chapter
                     $tripChapter->userFromStation = $station;
-                    	
+                     
                     //Get train number from the link to the train
                     $trainNumber = trim($tripChapterTrainNodeList->item(0)->nodeValue);
-                    	
+                     
                     //Initialize train
                     $tripChapter->train = getCachedTrain($trainNumber, $trainCache);
                 }//if FROM_STATION_WITH_TRAIN
                 else if($tripChapterType == "TO_STATION_WITH_TRAIN"){
                     //Set type of the next row in trip details
                     $tripChapterType = "UNKNOWN";
-                    	
+                     
                     //Set last station of trip chapter
                     $tripChapter->userToStation = $station;
-                    	
+                     
                     //Set train details from trip chapter details HTML
                     $previousTripChapterNode = $officialSearchResultXPath->query("preceding-sibling::*[1]", $tripChapterNode)->item(0);
-                    setTrainDetails($tripCollection, $tripChapter, $previousTripChapterNode, $officialSearchResultXPath, $stationCache);
-                    	
+                    setTrainDetails($tripCollection, $tripChapter, $previousTripChapterNode, $officialSearchResultXPath, $stationCache, $tripChapterTrainHeaderIndex);
+                     
                     array_push($trip->tripChapters, $tripChapter);
                     //echo "tripChapters: " . count($trip->tripChapters) . "<br/>";
                 } else if($tripChapterType == "FROM_STATION_WITH_LOCAL_TRANSPORTATION"){ //local transportation from station sh10
@@ -248,8 +266,9 @@ function getTripCollection($searchParameters){
                     //TODO handle unexpected row type; signal unexpected row type via email
                 }
             }//foreach tripChapterNode
-            	
+             
             array_push($tripCollection->trips, $trip);
+            //$firephp->log($trip, "trip");
         }//foreach tripNode
     }//if search ok
     else {
@@ -301,7 +320,7 @@ function getTripChapterType($tripChapterTrainNode, $officialSearchResultXPath){
     return $tripChapterType;
 }//getTripChapterType
 
-function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $officialSearchResultXPath, $stationCache){
+function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $officialSearchResultXPath, $stationCache, $tripChapterTrainHeaderIndex){
     $train = $tripChapter->train;
 
     //Set train date to trip date
@@ -317,14 +336,14 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
 
     //Set link to the offical webpage showing the train details from trip chapter HTML
     //echo $tripChapterNode.C14N() . "<br/>";
-    $train->officialLink = "http://elvira.mav-start.hu/elvira.dll/xslvzs/". $officialSearchResultXPath->query("td[5]/a/@href", $tripChapterNode)->item(0)->nodeValue;
+    $train->officialLink = "http://elvira.mav-start.hu/elvira.dll/xslvzs/". $officialSearchResultXPath->query("td[".$tripChapterTrainHeaderIndex."]/a/@href", $tripChapterNode)->item(0)->nodeValue;
     //echo "train->officialLink: _" . $train->officialLink . "_<br/>";
 
-    $otherInformation = $officialSearchResultXPath->query("td[5]/span[@style='color:white;background-color:red']/text()", $tripChapterNode);
+    $otherInformation = $officialSearchResultXPath->query("td[".$tripChapterTrainHeaderIndex."]/span[@style='color:white;background-color:red']/text()", $tripChapterNode);
     if(count($otherInformation) > 0){
         $train->otherInformation = $otherInformation->item(0)->nodeValue;
     }
-    
+
     //Set train services from trip chapter HTML
     $train->services = getTrainServices($officialSearchResultXPath, $tripChapterNode);
 
@@ -371,17 +390,17 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
     //Iterate over stations of the train
     foreach( $trainDetailsXPath->query("//*[@id='menetrend']/table/tbody/tr[@class='l']") as $stationNode){
         //TODO? reduce station details between $tripChapter->fromStation and $tripChapter->toStation, but be careful with station cache
-        	
+         
         //Initialize station
         $stationName = $trainDetailsXPath->query("td[2]/a", $stationNode)->item(0)->nodeValue;
         $station = getCachedStation($stationName, $stationCache);
         //echo "station->stationName: " . $station->stationName . "<br/>";
-        	
+         
         //Set link to the offical webpage showing the details of a train
         if(!isset($station->officialLink)){
             $station->officialLink = "http://elvira.mav-start.hu/elvira.dll/xslvzs/". $trainDetailsXPath->query("td[2]/a/@href", $stationNode)->item(0)->nodeValue;
         }
-        	
+         
         //Create official time
         $officialTime = new TrainTime();
         $officialTime->arrival = createDateTime($tripCollection->tripDate, trim($trainDetailsXPath->query("td[3]", $stationNode)->item(0)->nodeValue));
@@ -401,7 +420,7 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
         if($actualDepartureNode){
             $actualTime->departure = createDateTime($tripCollection->tripDate, trim($actualDepartureNode->nodeValue));
         }
-        	
+         
         //Create estimated time
         $estimatedTime = new TrainTime();
         $estimatedArrivalNode = $trainDetailsXPath->query("td[7]/span", $stationNode)->item(0);
@@ -416,10 +435,10 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
         if($estimatedDepartureNode){
             $estimatedTime->departure = createDateTime($tripCollection->tripDate, trim($estimatedDepartureNode->nodeValue));
         }
-        	
+         
         //Add station to train
         array_push($train->stations, $station);
-        	
+         
         //Set train times at the current station
         $trainTimes = new TrainTimes();
         $trainTimes->official = $officialTime;
@@ -428,19 +447,19 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
         //array(TimetableType.OFFICIAL=>$officialTime, TimetableType.ACTUAL=>$actualTime, TimetableType.ESTIMATED=>$estimatedTime);
         $train->timetable[$station->stationName] = $trainTimes;
         //echo "tripChapter->train->timetables_: " . count($tripChapter->train->timetables) . "<br/>";
-        	
+         
         //Set train platform at the current station
         $platformNode = $trainDetailsXPath->query("td[9]", $stationNode)->item(0);
         if($platformNode){
             $train->platforms[$station->stationName] = trim($platformNode->nodeValue);
         }
-        	
+         
         //Initialize a distance between two stations of the train
         $distance = new Distance();
-        	
+         
         //Set distance the previous station of the train in kilometers
         $distance->distanceInKilometers = $trainDetailsXPath->query("td[1]", $stationNode)->item(0)->nodeValue;
-        	
+         
         //Set official distance the previous station of the train in minutes
         //TODO set actual and estimated time distances
         $previousDepartureTimeNode = $trainDetailsXPath->query("../preceding-sibling::*[1]/td[4]", $stationNode);
@@ -457,7 +476,7 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
             $arrivalTime = strtotime(trim($arrivalTimeNode->item(0)->nodeValue));
             $distance->distanceInMinutes = date("HH:ii", ($arrivalTime - $previousDepartureTime));
         }
-        	
+         
         //Add distance to all distances of the train
         $train->distances[$station->stationName] = $distance;
     }//foreach stationNode
