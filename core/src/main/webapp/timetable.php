@@ -23,12 +23,7 @@
 
 require "script/php/init_timetable.php";
 
-//Timetable extracted from official timetable with DOM parsing
-
-//TODO mark next train if date is today and position it to center of screen
-//TODO show calculated delay
-//TODO show train number with link to new train details (including vonatosszeallitas?) instead of the official one
-//TODO icon for '->'
+//$firephp->log($tripCollection, "tripCollection");
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -61,24 +56,29 @@ require "script/php/init_timetable.php";
     <div class="mainArea">
         <!-- New search link -->
         <a id="searchLink" name="searchLink" href="search.php" class="searchLink">Új keresés</a>
+        
+        <!-- Main title with most important stations (first, via and last) -->
         <h1 id="mainTitle" name="mainTitle" class="mainTitle">
             <?php
             echo $tripCollection->userFromStation->stationName . " - ";
             //$firephp->log($tripCollection->userViaStation, "viaStation");
             if(isset($tripCollection->userViaStation) && isset($tripCollection->userViaStation->stationName) && strlen($tripCollection->userViaStation->stationName) > 0){
-			echo $tripCollection->userViaStation->stationName . " - ";
-		}
-		echo $tripCollection->userToStation->stationName;
+			    echo $tripCollection->userViaStation->stationName . " - ";
+		    }
+		    echo $tripCollection->userToStation->stationName;
 		?>
         </h1>
+        
+        <!-- Trip date -->
         <h2>
-            <span class="tripDate"> <?php echo $tripCollection->tripDate->format("Y.m.d");?>
-            </span> <span class="tripDay"> <?php
-            echo utf8_encode(strftime("%A", $tripCollection->tripDate->getTimestamp()));
-            ?>
-            </span>
+            <span class="tripDate"> <?php echo $tripCollection->tripDate->format("Y.m.d");?></span>
+            <span class="tripDay"> <?php echo utf8_encode(strftime("%A", $tripCollection->tripDate->getTimestamp()));?></span>
         </h2>
+        
+        <!-- Trip table -->
         <table id="tripTable" name="tripTable" border="1">
+        
+            <!-- Trip table header -->
             <tr>
                 <th class="trip">Út</th>
                 <th class="trip" colspan="2">Indulás és Érkezési Idő</th>
@@ -94,10 +94,15 @@ require "script/php/init_timetable.php";
             <tr id="pastTrips" name="pastTrips">
                 <th class="trip" colspan="4">Befejezett Utak</th>
             </tr>
+            
+            
+            <?php }?>
+            
+            <!-- Trip table body -->
             <?php
-            }
             $tripIndex = 0;
             foreach ($tripCollection->trips as $trip){
+                //$firephp->log($trip, "trip");
         		$tripIndex++;
         		$evenOrOddTripCssClass = ($tripIndex%2==0)?"evenTrip":"oddTrip";
         		$tripinfoLinkId = "tripinfoLink" . $tripIndex;
@@ -110,6 +115,8 @@ require "script/php/init_timetable.php";
                 }
                 if($tripIndex == $lastFinishedTripIndex + 1 && $tripIndex < $firstUpcomingTripIndex){
             ?>
+            
+            <!-- Current and upcoming trip separators -->
             <tr id="currentTrips" name="currentTrips">
                 <th class="trip" colspan="4">Aktuális Utak</th>
             </tr>
@@ -118,113 +125,173 @@ require "script/php/init_timetable.php";
             ?>
             <tr id="futureTrips" name="futureTrips">
                 <th class="trip" colspan="4">Hátralevő Utak</th>
-            </tr>
-            <?php
-                }
-                echo "<tr class=\"trip," . $evenOrOddTripCssClass . "\">";
-            ?>
-            <td class="tripIndex"><?php if($tripIndex==$highlightedTripIndex){?> <a name="highlightedTrip" /> <?php }?> <?php echo $tripIndex;?>.
-                út - <a id="<?php echo $tripinfoLinkId;?>" name="<?php echo $tripinfoLinkId;?>"
-                href="timetable.php?tripIndex=<?php echo $tripIndex;?>">Részletek</a> <!-- 	    	<form method="post" action="tripinfo.php"> -->
-                <!--		        <input id="tripIndex" name="tripIndex" type="hidden" value="<?php echo $tripIndex?>" /> --> <!-- 		        <button class="tripInfoBtn" id="tripInfoBtn" name="tripInfoBtn" type="submit">Részletek</button> -->
-                <!-- 	    	</form> --> <?php
-                if(count($trip->tripChapters) == 1){
-                echo "<br><a id=\"" . $fromStationLinkId . "\" name=\"" . $fromStationLinkId . "\" href=\"" . $trip->tripChapters[0]->userFromStation->officialLink . "\">" . $trip->tripChapters[0]->userFromStation->stationName .
-                "</a> - <a id=\"" . $toStationLinkId . "\" name=\"" . $toStationLinkId . "\" href=\"" . $trip->tripChapters[0]->userToStation->officialLink . "\">" . $trip->tripChapters[0]->userToStation->stationName . "</a>";
-            }//if exactly one trip chapter
-            ?>
-            </td>
-            <td class="officialTripTime"><?php echo $trip->getBeginTime()->official->departure->format("H:i") . " - " . $trip->getEndTime()->official->arrival->format("H:i");?>
-            </td>
-            <td class="realTripTime"><?php
-            if(	isset($trip->getBeginTime()->actual->departure)|| isset($trip->getBeginTime()->estimated->departure) ||
-			isset($trip->getEndTime()->actual->arrival) || isset($trip->getEndTime()->estimated->arrival)){
-	        if(isset($trip->getBeginTime()->actual->departure)){
-				echo $trip->getBeginTime()->actual->departure->format("H:i") . " - ";
-			} else if(isset($trip->getBeginTime()->estimated->departure)){
-				echo $trip->getBeginTime()->estimated->departure->format("H:i") . " - ";
-			} else {
-				echo $trip->getBeginTime()->official->departure->format("H:i") . " - ";
-			}
-
-			if(isset($trip->getEndTime()->actual->arrival)){
-				echo $trip->getEndTime()->actual->arrival->format("H:i");
-			} else if(isset($trip->getEndTime()->estimated->arrival)){
-				echo $trip->getEndTime()->estimated->arrival->format("H:i");
-			} else {
-				echo $trip->getEndTime()->official->arrival->format("H:i");
-			}
-		}//if any actual or estimated time is given
-		?></td>
-            <td class="tripPrice"><?php
+            </tr>            
+            <?php }?>
+            
+            
+            <tr class="trip,<?php echo $evenOrOddTripCssClass;?>">
+                <td class="tripIndex">
+                <!-- Highlighted trip marker -->
+                <?php if($tripIndex==$highlightedTripIndex){?>
+                    <a name="highlightedTrip" />
+                <?php }?>
+                
+                <!-- Trip index -->
+                <?php echo $tripIndex . ".út - ";?>
+                
+                <!-- Trip details link -->
+                <a id="<?php echo $tripinfoLinkId;?>" name="<?php echo $tripinfoLinkId;?>" href="timetable.php?tripIndex=<?php echo $tripIndex;?>">Részletek</a>
+                    
+                <!-- Trip chapter info if trip contains only one chapeter -->
+                <?php if(count($trip->tripChapters) == 1){
+                    echo "<br>
+                    <a id=\"" . $fromStationLinkId . "\" name=\"" . $fromStationLinkId . "\" href=\"" . $trip->tripChapters[0]->userFromStation->officialLink . "\">" . 
+                    $trip->tripChapters[0]->userFromStation->stationName . "</a> - 
+                    <a id=\"" . $toStationLinkId . "\" name=\"" . $toStationLinkId . "\" href=\"" . $trip->tripChapters[0]->userToStation->officialLink . "\">" . 
+                    $trip->tripChapters[0]->userToStation->stationName . "</a>";
+                    if($trip->tripChapters[0]->train->otherInformation != null){
+                        echo "<br>" . $trip->tripChapters[0]->train->otherInformation;
+                    }
+                }//if exactly one trip chapter
+                ?>
+                </td>
+                
+                <!-- Official trip times -->
+                <td class="officialTripTime">
+                    <?php echo $trip->getBeginTime()->official->departure->format("H:i") . " - " . $trip->getEndTime()->official->arrival->format("H:i");?>
+                </td>
+                
+                <!-- Real trip times -->
+                <td class="realTripTime">
+                <?php
+                //If any actual or estimated time is known 
+                if(	isset($trip->getBeginTime()->actual->departure)|| isset($trip->getBeginTime()->estimated->departure) ||
+    			    isset($trip->getEndTime()->actual->arrival) || isset($trip->getEndTime()->estimated->arrival)){
+    	            
+                    //Real departure if known
+                    if(isset($trip->getBeginTime()->actual->departure)){
+    				    echo $trip->getBeginTime()->actual->departure->format("H:i") . " - ";
+    			    } else if(isset($trip->getBeginTime()->estimated->departure)){
+    				    echo $trip->getBeginTime()->estimated->departure->format("H:i") . " - ";
+    			    } else {
+    				    echo $trip->getBeginTime()->official->departure->format("H:i") . " - ";
+    			    }
+    
+    			    //Real arrival if known
+        			if(isset($trip->getEndTime()->actual->arrival)){
+        				echo $trip->getEndTime()->actual->arrival->format("H:i");
+        			} else if(isset($trip->getEndTime()->estimated->arrival)){
+        				echo $trip->getEndTime()->estimated->arrival->format("H:i");
+        			} else {
+        				echo $trip->getEndTime()->official->arrival->format("H:i");
+        			}
+    		    }//if any actual or estimated time is given
+    		    ?>
+    		    </td>
+    		    
+    		    <!-- Trip price and delay -->
+                <td class="tripPrice">
+                <?php
+                //First class ticket
                 if(isset($trip->tickets->firstClass) && isset($trip->tickets->firstClass->price) && strlen(trim($trip->tickets->firstClass->price)) > 0){
                     echo "<span class=\"price\">1. oszt.: " . $trip->tickets->firstClass->price . " " . $trip->tickets->firstClass->priceUnit . "</span><br>";
                 }
+                //Second class ticket
                 echo "<span class=\"price\">2. oszt.: " . $trip->tickets->secondClass->price . " " . $trip->tickets->secondClass->priceUnit . "</span>";
-				
+    			
+                //Delay
                 $delay = $trip->getEndTime()->getDelay();
                 if(isset($delay)){
                     echo "<br><span class=\"delay\">" . $delay->format("%i") . " perc késés</span>";
-                }?>
-            </td>
-            </tr>
-            <?php
-    if(count($trip->tripChapters) > 1){
-        $tripChapterIndex = 0;
-        foreach ($trip->tripChapters as $tripChapter){
-            $tripChapterIndex++;
-            $fromStationLinkId =  "fromStationLink" . $tripIndex . "_" . $tripChapterIndex;
-            $toStationLinkId =  "toStationLink" . $tripIndex . "_" . $tripChapterIndex;
-            $trainLinkId =  "trainLink" . $tripIndex . "_" . $tripChapterIndex;
-            echo "<tr class=\"tripChapter," . $evenOrOddTripCssClass . "\">";
-            ?>
-            <td class="tripChapterStation"><span class="station"><a id="<?php echo $fromStationLinkId;?>"
-                    name="<?php echo $fromStationLinkId;?>" href="<?php echo $tripChapter->userFromStation->officialLink?>"> <?php echo $tripChapter->userFromStation->stationName;?>
-                </a> </span> - <span class="station"><a id="<?php echo $toStationLinkId;?>" name="<?php echo $toStationLinkId;?>"
-                    href="<?php echo $tripChapter->userToStation->officialLink?>"> <?php echo $tripChapter->userToStation->stationName;?>
-                </a> </span>
-            </td>
-            <td class="officialTripChapterTime"><?php echo 
-            $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->official->departure->format("H:i") . " - " .
-            $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->official->arrival->format("H:i");?></td>
-            <td class="realTripChapterTime"><?php
-            if(	isset($tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->actual->departure) ||
-    			isset($tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->estimated->departure) ||
-    			isset($tripChapter->train->timetable[$tripChapter->userToStation->stationName]->actual->arrival) ||
-    			isset($tripChapter->train->timetable[$tripChapter->userToStation->stationName]->estimated->arrival)
-    			){
-    	       	if(isset($tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->actual->departure)){
-    	       		echo $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->actual->departure->format("H:i") . " - ";
-    	       	} else if(isset($tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->estimated->departure)){
-    	       		echo $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->estimated->departure->format("H:i") . " - ";
-    	       	} else{
-    				echo $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->official->departure->format("H:i") . " - ";
-    			}
-    			if(isset($tripChapter->train->timetable[$tripChapter->userToStation->stationName]->actual->arrival)){
-    	       		echo $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->actual->arrival->format("H:i");
-    	       	} else if(isset($tripChapter->train->timetable[$tripChapter->userToStation->stationName]->estimated->arrival)){
-    	       		echo $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->estimated->arrival->format("H:i");
-    	       	} else{
-    				echo $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->official->arrival->format("H:i");
-    			}
-           	}//if any actual or estimated time is given
-       	?>
-            </td>
-            <td class="delay">
-                <?php
-                $delay = $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->getDelay();
-                if(isset($delay)){
-                    echo "<span class=\"delay\">" . $delay->format("%i") . " perc késés</span>";
                 }
                 ?>
-            </td>
+                </td>
             </tr>
             <?php
-        }//foreach tripChapter
-    }//if more than one trip chapter
-?>
+            //Separate row for trip chapters if trip contains more than one trip chapter 
+            if(count($trip->tripChapters) > 1){
+                $tripChapterIndex = 0;
+                foreach ($trip->tripChapters as $tripChapter){
+                    $tripChapterIndex++;
+                    $fromStationLinkId =  "fromStationLink" . $tripIndex . "_" . $tripChapterIndex;
+                    $toStationLinkId =  "toStationLink" . $tripIndex . "_" . $tripChapterIndex;
+                    $trainLinkId =  "trainLink" . $tripIndex . "_" . $tripChapterIndex;
+            ?>
+            
+            <!-- Trip chapter info -->
+            <tr class="tripChapter,<?php echo $evenOrOddTripCssClass;?>">
+                <!-- First and last staion of the trip chapter -->
+                <td class="tripChapterStation">
+                    <span class="station">
+                        <a id="<?php echo $fromStationLinkId;?>" name="<?php echo $fromStationLinkId;?>" href="<?php echo $tripChapter->userFromStation->officialLink?>">
+                            <?php echo $tripChapter->userFromStation->stationName;?>
+                        </a>
+                    </span> - 
+                    <span class="station">
+                        <a id="<?php echo $toStationLinkId;?>" name="<?php echo $toStationLinkId;?>" href="<?php echo $tripChapter->userToStation->officialLink?>">
+                            <?php echo $tripChapter->userToStation->stationName;?>
+                        </a>
+                    </span>
+                    <?php
+                    if($tripChapter->train->otherInformation != null){
+                        echo "<br>" . $tripChapter->train->otherInformation;
+                    }
+                    ?>
+                </td>
+                
+                <!-- Official trip chapter times -->
+                <td class="officialTripChapterTime">
+                <?php echo 
+                    $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->official->departure->format("H:i") . " - " .
+                    $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->official->arrival->format("H:i");
+                ?>
+                </td>
+                
+                <!-- Real trip chapter times -->
+                <td class="realTripChapterTime">
+                <?php
+                //If any actual or estimated time is known
+                if(	isset($tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->actual->departure) ||
+        			isset($tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->estimated->departure) ||
+        			isset($tripChapter->train->timetable[$tripChapter->userToStation->stationName]->actual->arrival) ||
+        			isset($tripChapter->train->timetable[$tripChapter->userToStation->stationName]->estimated->arrival)
+        			){
+
+                    //Real departure if known
+        	       	if(isset($tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->actual->departure)){
+        	       		echo $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->actual->departure->format("H:i") . " - ";
+        	       	} else if(isset($tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->estimated->departure)){
+        	       		echo $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->estimated->departure->format("H:i") . " - ";
+        	       	} else{
+        				echo $tripChapter->train->timetable[$tripChapter->userFromStation->stationName]->official->departure->format("H:i") . " - ";
+        			}
+        			
+        			//Real arrival if known
+        			if(isset($tripChapter->train->timetable[$tripChapter->userToStation->stationName]->actual->arrival)){
+        	       		echo $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->actual->arrival->format("H:i");
+        	       	} else if(isset($tripChapter->train->timetable[$tripChapter->userToStation->stationName]->estimated->arrival)){
+        	       		echo $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->estimated->arrival->format("H:i");
+        	       	} else{
+        				echo $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->official->arrival->format("H:i");
+        			}
+               	}//if any actual or estimated time is given
+           	    ?>
+                </td>
+                
+                <!-- Delay -->
+                <td class="delay">
+                    <?php
+                    $delay = $tripChapter->train->timetable[$tripChapter->userToStation->stationName]->getDelay();
+                    if(isset($delay)){
+                        echo "<span class=\"delay\">" . $delay->format("%i") . " perc késés</span>";
+                    }
+                    ?>
+                </td>
+            </tr>
             <?php
-}//foreach trip
+            }//foreach tripChapter
+        }//if more than one trip chapter
+    }//foreach trip
 ?>
         </table>
     </div>

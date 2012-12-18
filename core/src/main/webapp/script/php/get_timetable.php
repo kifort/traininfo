@@ -320,8 +320,11 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
     $train->officialLink = "http://elvira.mav-start.hu/elvira.dll/xslvzs/". $officialSearchResultXPath->query("td[5]/a/@href", $tripChapterNode)->item(0)->nodeValue;
     //echo "train->officialLink: _" . $train->officialLink . "_<br/>";
 
-    //TODO set $train->otherInformation
-
+    $otherInformation = $officialSearchResultXPath->query("td[5]/span[@style='color:white;background-color:red']/text()", $tripChapterNode);
+    if(count($otherInformation) > 0){
+        $train->otherInformation = $otherInformation->item(0)->nodeValue;
+    }
+    
     //Set train services from trip chapter HTML
     $train->services = getTrainServices($officialSearchResultXPath, $tripChapterNode);
 
@@ -366,7 +369,7 @@ function setTrainDetails($tripCollection, $tripChapter, $tripChapterNode, $offic
     $train->distances = array();
 
     //Iterate over stations of the train
-    foreach( $trainDetailsXPath->query("//*[@id='menetrend']/table/tbody/tr[position()>2]") as $stationNode){
+    foreach( $trainDetailsXPath->query("//*[@id='menetrend']/table/tbody/tr[@class='l']") as $stationNode){
         //TODO? reduce station details between $tripChapter->fromStation and $tripChapter->toStation, but be careful with station cache
         	
         //Initialize station
