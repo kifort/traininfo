@@ -30,10 +30,10 @@ if(!$supportedClient){
 ?>
 <p>
 	Ez a vonat információs weboldal Kindle elektronikus könyvekre lett kitalálva. Android-on javaslom a
-	<a href=\"https://play.google.com/store/apps/details?id=app.mav.menetrend&hl=hu\">Menetrend Droid</a>-ot vagy az
-	<a href=\"https://play.google.com/store/apps/details?id=hu.porcica.mav.menetrend&hl=hu\">AZ Menetrend - MÁV</a>-ot, iOS-en (iPhone, iPad, ...) az
-	<a href=\"https://itunes.apple.com/app/id423649086\">iMenetrend</a>-et, nem mobil eszközökre pedig ott a jó öreg
-	<a href=\"http://elvira.mav-start.hu\">ELVIRA</a>.<br/>
+	<a href="https://play.google.com/store/apps/details?id=app.mav.menetrend&hl=hu">Menetrend Droid</a>-ot vagy az
+	<a href="https://play.google.com/store/apps/details?id=hu.porcica.mav.menetrend&hl=hu">AZ Menetrend - MÁV</a>-ot, iOS-en (iPhone, iPad, ...) az
+	<a href="https://itunes.apple.com/app/id423649086">iMenetrend</a>-et, nem mobil eszközökre pedig ott a jó öreg
+	<a href="http://elvira.mav-start.hu">ELVIRA</a>.<br/>
 <p>
 <?php
 }//if not kindle
