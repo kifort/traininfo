@@ -29,5 +29,5 @@ $favouriteCookieId = "TRAININFO_FAVOURITES";
 require_once('FirePHPCore/FirePHP.class.php');
 ob_start();
 $firephp = FirePHP::getInstance(true);
-$firephp->log($htmlBaseHref, "htmlBaseHref");
+//$firephp->log($htmlBaseHref, "htmlBaseHref");
 ?>

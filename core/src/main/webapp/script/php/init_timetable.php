@@ -55,7 +55,7 @@ foreach ($tripCollection->trips as $trip){
     $tripBeginTime = $trip->getBeginTime();
     if(isset($tripBeginTime)){
         $tripBeginTime = $tripBeginTime->official->departure;
-        $firephp->log($tripBeginTime, "tripBeginTime");
+        //$firephp->log($tripBeginTime, "tripBeginTime");
         if(isset($trip->getBeginTime()->actual->departure)){
             $tripBeginTime = $trip->getBeginTime()->actual->departure;
         } else if(isset($trip->getBeginTime()->estimated->departure)){

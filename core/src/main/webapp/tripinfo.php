@@ -108,7 +108,7 @@ if(!isset($trip)){
 						<?php
 							if($station->stationName==$tripChapter->userFromStation->stationName){
                                 $trainIndex++;
-                                $firephp->log($tripChapter->train, "tripChapter->train");
+                                //$firephp->log($tripChapter->train, "tripChapter->train");
 								echo $tripChapter->train->firstStation()->stationName . " - " . $tripChapter->train->lastStation()->stationName;
 								echo " (<a id=\"trainLink" . $trainIndex . "\" name=\"trainLink" . $trainIndex. "\" class=\"trainLink\" href=\"" . $tripChapter->train->officialLink . "\">" . $tripChapter->train->trainNumber . "</a>)";
 								if($tripChapter->train->otherInformation != null){
