@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /timetable.php
+Disallow: /tripinfo.php
+Disallow: /error404.php
+Disallow: /version.php
+Disallow: /script/
+Disallow: /style/
+Disallow: /license/

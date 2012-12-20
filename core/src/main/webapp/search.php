@@ -27,15 +27,8 @@ require "script/php/init_search.php";
 <html lang="hu">
 <head>
 <title>Vonat Információ - Keresés</title>
-<base target="_self" href="<?php echo $htmlBaseHref;?>/" />
-<meta charset="utf-8" />
-<meta http-equiv="Content-Style-Type" content="text/css" />
-<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<?php require "script/php/header.php";?>
 <meta name="robots" content="noindex, nofollow" />
-
-<meta http-equiv="cache-control" content="no-cache" />
-<meta http-equiv="expires" content="0" />
-<meta http-equiv="pragma" content="no-cache" />
 
 <link rel="stylesheet" type="text/css" href="style/css/search.css"/>
 <!-- <link rel="stylesheet" media="handheld" type="text/css" href="style/css/search.css"/> -->

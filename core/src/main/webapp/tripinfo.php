@@ -45,26 +45,8 @@ if(!isset($trip)){
 <html lang="hu">
 <head>
   <title>Vonat Információ - Menetrend</title>
-  
-  <base target="_self" href="<?php echo $htmlBaseHref;?>/" />
-  
-  <meta charset="utf-8" />
-  <!-- <meta charset="iso-8859-2" /> -->
-  
-  <meta http-equiv="Content-Style-Type" content="text/css" />
-  <meta http-equiv="Content-Script-Type" content="text/javascript" />
-  
+  <?php require "script/php/header.php";?>
   <meta name="robots" content="noindex, nofollow" />
-  
-  <meta http-equiv="cache-control" content="no-cache" />
-  <meta http-equiv="expires" content="0" />
-  <meta http-equiv="pragma" content="no-cache" />
-  
-  <!--
-  <link rel="icon" href="http://elvira.mav-start.hu/xslvzs/res/favicon.ico"></link>
-  <link type="image/ico" rel="shortcut icon" href="http://elvira.mav-start.hu/xslvzs/res/favicon.ico"></link>
-  -->
-  
   <link rel="stylesheet" type="text/css" href="style/css/tripinfo.css"/>
   <!-- <link rel="stylesheet" media="handheld" type="text/css" href="style/css/tripinfo.css"/> -->
 </head>
