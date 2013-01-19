@@ -54,7 +54,7 @@
     <target name="upload" depends="check-properties,clear" if="properties-checked">
         <echo message="Upload to ${ftp-server}/${ftp-dir}"/>
         <unzip src="target/lib/traininfo.zip" dest="target/webapp" />
-        <ftp server="${ftp-server}" userid="${ftp-uname}" password="${ftp-pwd}" remotedir="${ftp-dir}" depends="yes">
+        <ftp server="${ftp-server}" userid="${ftp-uname}" password="${ftp-pwd}" remotedir="${ftp-dir}" action="put" depends="yes" passive="yes">
             <fileset dir="target/webapp" />
         </ftp>
     </target>
