@@ -60,7 +60,7 @@
 
     <repositories>
         <repository>
-            <id>public.nexus-vonatinfo.elasticbeanstalk.com</id>
+            <id>public.ci.vonatinfo.dnsd.me</id>
             <name>Traininfo public repository</name>
             <releases>
                 <updatePolicy>daily</updatePolicy>
@@ -70,20 +70,20 @@
                 <updatePolicy>always</updatePolicy>
                 <enabled>true</enabled>
             </snapshots>
-            <url>http://nexus-vonatinfo.elasticbeanstalk.com/content/groups/public/</url>
+            <url>http://ci.vonatinfo.dnsd.me/nexus/content/groups/public/</url>
         </repository>
     </repositories>
 
     <distributionManagement>
         <repository>
-            <id>releases.nexus-vonatinfo.elasticbeanstalk.com</id>
+            <id>releases.ci.vonatinfo.dnsd.me</id>
             <name>Traininfo release repository</name>
-            <url>http://nexus-vonatinfo.elasticbeanstalk.com/content/repositories/releases/</url>
+            <url>http://ci.vonatinfo.dnsd.me/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
-            <id>snapshots.nexus-vonatinfo.elasticbeanstalk.com</id>
+            <id>snapshots.ci.vonatinfo.dnsd.me</id>
             <name>Traininfo snapshot repository</name>
-            <url>http://nexus-vonatinfo.elasticbeanstalk.com/content/repositories/snapshots/</url>
+            <url>http://ci.vonatinfo.dnsd.me/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 

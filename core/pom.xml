@@ -38,6 +38,12 @@
     <artifactId>core</artifactId>
 
     <packaging>pom</packaging>
+    
+    <scm>
+        <connection>scm:git:https://github.com/kifort/traininfo.git</connection>
+        <developerConnection>scm:git:https://github.com/kifort/traininfo.git</developerConnection>
+        <url>https://github.com/kifort/traininfo</url>
+    </scm>
 
     <build>
         <plugins>
