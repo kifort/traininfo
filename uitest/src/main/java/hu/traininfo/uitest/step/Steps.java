@@ -50,6 +50,8 @@ import com.google.common.base.Function;
 public class Steps {
     private static final int DEFAULT_TIMEOUT_IN_SECONDS = 10;
     // private static final String KINDLE_HTTP_USER_AGENT = "";
+    private static final String BROWSER_MISSING_ERROR_MESSAGE = "Browser missing";
+
     private WebDriver browser;
     private WebDriverBackedSelenium selenium;
     private String testEnv;
@@ -74,6 +76,7 @@ public class Steps {
 
     @Given("that I navigate to $webpage")
     public void navigateTo(String webpage) {
+        checkBrowser();
         browser.get(getWebpageUrl(webpage));
     }
 
@@ -174,6 +177,12 @@ public class Steps {
     public void closeBrowser() {
         if (browser != null) {
             browser.quit();
+        }
+    }
+
+    private void checkBrowser() {
+        if (browser == null) {
+            throw new IllegalStateException(BROWSER_MISSING_ERROR_MESSAGE);
         }
     }
 
