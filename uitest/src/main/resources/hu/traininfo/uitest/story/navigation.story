@@ -78,7 +78,7 @@ Scenario: check navigation from timetable page to return trip timetable page wit
 
 Given that I navigate to timetable.php
 When I click on Visszaút link
-Then I should see timetable.php page within 3 seconds
+Then I should see timetable.php page within 2 seconds
 And I should see Eger - Dabas - Verőce title in the main title field within 3 seconds
 
 !-- Scenarios without via station and transfer
