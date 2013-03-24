@@ -64,6 +64,9 @@ public class Steps {
         }
 
         this.browser = new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub"), DesiredCapabilities.firefox());
+
+        checkBrowser();
+
         this.browser.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS);
 
         // FirefoxProfile profile = new FirefoxProfile();

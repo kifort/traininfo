@@ -21,7 +21,7 @@ And I should see Verőce - Dabas - Eger title in the main title field within 3 s
 Scenario: check navigation from timetable page back to search page with via station and transfer
 
 Given that I navigate to timetable.php
-When I click on Új keresés link
+When I click on Keresés link
 Then I should see search.php page within 2 seconds
 And I should see Verőce in field labelled Honnan:
 And I should see Eger in field labelled Hova:
@@ -37,7 +37,7 @@ And I should see Verőce - Dabas - Eger title in the main title field within 3 s
 Scenario: check navigation from trip info page back to search page with via station and transfer
 
 Given that I navigate to tripinfo.php
-When I click on Új keresés link
+When I click on Keresés link
 Then I should see search.php page within 2 seconds
 And I should see Verőce in field labelled Honnan:
 And I should see Eger in field labelled Hova:
@@ -46,7 +46,7 @@ And I should see Dabas in field labelled Érintve:
 Scenario: check navigation from trip info page back to timetable page with via station and transfer
 
 Given that I navigate to tripinfo.php
-When I click on Vissza az utak listájához link
+When I click on Eger link
 Then I should see timetable.php page within 2 seconds
 And I should see Verőce - Dabas - Eger title in the main title field within 3 seconds
 
@@ -74,6 +74,13 @@ Given that I navigate to timetable.php
 When I click 1. final station of the 1. trip link
 Then I should see http://elvira.mav-start.hu/elvira.dll/xslvzs/af page within 3 seconds
 
+Scenario: check navigation from timetable page to return trip timetable page with via station and transfer
+
+Given that I navigate to timetable.php
+When I click on Visszaút link
+Then I should see timetable.php page within 3 seconds
+And I should see Eger - Dabas - Verőce title in the main title field within 3 seconds
+
 !-- Scenarios without via station and transfer
 
 Scenario: check Menetrend button without via station and transfer
@@ -89,7 +96,7 @@ And I should see BUDAPEST* - Esztergom title in the main title field within 3 se
 Scenario: check navigation from timetable page back to search page without via station and transfer
 
 Given that I navigate to timetable.php
-When I click on Új keresés link
+When I click on Keresés link
 Then I should see search.php page within 2 seconds
 And I should see BUDAPEST* in field labelled Honnan:
 And I should see Esztergom in field labelled Hova:
@@ -105,7 +112,7 @@ And I should see BUDAPEST* - Esztergom title in the main title field within 3 se
 Scenario: check navigation from trip info page back to search page withot via station and transfer
 
 Given that I navigate to tripinfo.php
-When I click on Új keresés link
+When I click on Keresés link
 Then I should see search.php page within 2 seconds
 And I should see BUDAPEST* in field labelled Honnan:
 And I should see Esztergom in field labelled Hova:
@@ -114,7 +121,7 @@ And I should see nothing in field labelled Érintve:
 Scenario: check navigation from trip info page back to timetable page with via station and transfer
 
 Given that I navigate to tripinfo.php
-When I click on Vissza az utak listájához link
+When I click on Esztergom link
 Then I should see timetable.php page within 2 seconds
 And I should see BUDAPEST* - Esztergom title in the main title field within 3 seconds
 
@@ -157,7 +164,7 @@ And I should see Verőce - Dabas - Eger title in the main title field within 3 s
 
 Scenario: check favourite listing with via station and transfer
 Given that I navigate to timetable.php
-When I click on Új keresés link
+When I click on Keresés link
 Then I should see search.php page within 2 seconds
 When I click on Ma: Verőce - Dabas - Eger button
 Then I should see timetable.php page within 2 seconds
