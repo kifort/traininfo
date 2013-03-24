@@ -52,8 +52,17 @@ if(!isset($trip)){
 </head>
 <body>
   <div class="mainArea">
-    <a id="timetableLink" name="timetableLink" href="timetable.php" class="timetableLink">Vissza az utak listájához</a>
-    <a id="searchLink" name="searchLink" href="search.php" class="searchLink">Új keresés</a>
+    <div class="navigationArea">
+        <!-- Page history -->
+        <span class="historyArea">
+        <!-- New search link -->
+          <a id="searchLink" name="searchLink" href="search.php" class="searchLink">Keresés</a>
+          <span class="historySeparator">></span>
+          <a id="refreshTripCollectionLink" name="refreshTripCollectionLink" href="search.php?refreshTripCollection" class="refreshTripCollectionLink"><?php echo $tripCollection->userToStation->stationName;?></a>
+          <span class="historySeparator">></span>
+          <a id="refreshTripLink" name="refreshTripLink" href="search.php?refreshTrip" class="refreshTripLink"><?php echo $trip->getBeginTime()->official->departure->format("H:i");?></a>
+        </span>
+    </div>
     <h1 id="mainTitle" name="mainTitle" class="mainTitle"><?php
 	    echo $tripCollection->userFromStation->stationName . " - ";
 	    if(isset($tripCollection->userViaStation) && isset($tripCollection->userViaStation->stationName) && strlen($tripCollection->userViaStation->stationName) > 0){

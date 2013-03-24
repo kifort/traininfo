@@ -29,6 +29,19 @@ div.mainArea {
     width: 550px
 }
 
+div.navigationArea {
+    white-space:nowrap;
+}
+
+span.historyArea {
+    float: left;
+}
+
+span.historySeparator {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 table {
     clear: both;
     text-align: left;
@@ -50,7 +63,7 @@ td.realTripTime {
     text-align: center;
 }
 
-a.searchLink {
+span.backtripLink {
     float: right;
 }
 

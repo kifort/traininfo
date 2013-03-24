@@ -29,6 +29,19 @@ div.mainArea {
     width: 550px
 }
 
+div.navigationArea {
+    white-space:nowrap;
+}
+
+span.historyArea {
+    float: left;
+}
+
+span.historySeparator {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 table {
     clear: both;
     text-align: left;
@@ -38,10 +51,6 @@ table {
 
 a.timetableLink {
     float: left;
-}
-
-a.searchLink {
-    float: right;
 }
 
 h1.mainTitle {

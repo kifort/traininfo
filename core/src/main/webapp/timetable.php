@@ -36,8 +36,20 @@ require "script/php/init_timetable.php";
 </head>
 <body onload="window.location.hash='highlightedTrip'">
     <div class="mainArea">
-        <!-- New search link -->
-        <a id="searchLink" name="searchLink" href="search.php" class="searchLink">Új keresés</a>
+        <div class="navigationArea">
+            <!-- Page history -->
+            <span class="historyArea">
+                <!-- New search link -->
+                <a id="searchLink" name="searchLink" href="search.php" class="searchLink">Keresés</a>
+                <span class="historySeparator">></span>
+                <a id="refreshTripCollectionLink" name="refreshTripCollectionLink" href="search.php?refreshTripCollection" class="refreshTripCollectionLink"><?php echo $tripCollection->userToStation->stationName;?></a>
+            </span>
+            
+            <span class="backtripLink">
+                <!-- Backtrip link -->
+                <a id="backtripLink" name="backtripLink" href="search.php?searchBack" class="backtripLink">Visszaút</a>
+            </span>
+        </div>
         
         <!-- Main title with most important stations (first, via and last) -->
         <h1 id="mainTitle" name="mainTitle" class="mainTitle">
@@ -63,7 +75,7 @@ require "script/php/init_timetable.php";
             <!-- Trip table header -->
             <tr>
                 <th class="trip">Út</th>
-                <th class="trip" colspan="2">Indulás és Érkezési Idő</th>
+                <th class="trip" colspan="2">Indulási és Érkezési Idő</th>
                 <th class="trip">Ár</th>
             </tr>
             <tr>

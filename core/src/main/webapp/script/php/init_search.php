@@ -37,6 +37,8 @@ if(isset($_POST["deleteFavouriteBtn"])){
 }
 
 $newSearch = false;
+$reSearch = false;
+$backSearch = false;
 
 //Get favourite search parameters from session if asked for
 if(isset($_POST["favouriteBtn"])){
@@ -61,22 +63,28 @@ if(isset($_POST["searchBtn"])){
     }
 }
 
+if(isset($_GET["refreshTripCollection"])){
+    resetTrip();
+    $reSearch = true;
+}
+
+if(isset($_GET["refreshTrip"])){
+    $reSearch = true;
+}
+
+if(isset($_GET["searchBack"])){
+    $backSearch = true;
+}
+
 if($newSearch){
     //Reset previous search result including selected trip if any
     resetSearch();
-
-    //Parse the official timetable HTML with DOM and create an inner representation from it as described in TripCollectionClass.php
-    $tripCollection = getTripCollection($_SESSION["search"]);
-    $_SESSION["tripCollection"] = $tripCollection;
-
-    if(!isset($tripCollection)){
-        $errorMessages["search"] = "Sikertelen keresés";
-    } else if(count($tripCollection->trips) == 0){
-        $errorMessages["search"] = "Sikertelen keresés";
-    } else{
-        //$firephp->log($tripCollection, "tripCollection");
-        header( "Location: " . $htmlBaseHref . "/timetable.php" );
-    }
+    search();
+} else if ($reSearch && isset($_SESSION["search"])) {
+    search();
+} else if ($backSearch && isset($_SESSION["search"])) {
+    swapFromAndToStations();
+    search();
 } else{
     $when = "Ma";
     $whatTime = "Egész nap";
@@ -178,18 +186,48 @@ function addFavourite($favouriteCookieId, $firephp){
 
 //Reset previous search result including selected trip if any
 function resetSearch(){
-    //Reset previous search result if any
+    resetTripCollection();
+    resetTrip();
+}//resetSearch
+
+//Reset previous search result if any
+function resetTripCollection(){    
     if(isset($_SESSION["tripCollection"])){
         //$firephp->log("Trip collection in session. Delete it.");
         unset($_SESSION["tripCollection"]);
         $_SESSION["tripCollection"] = null;
     }
+}
 
-    //Reset previous selected trip if any
+//Reset previous selected trip if any
+function resetTrip(){
     if(isset($_SESSION["tripIndex"])){
         //$firephp->log("Trip index in session. Delete it.");
         unset($_SESSION["tripIndex"]);
         $_SESSION["tripIndex"] = null;
     }
-}//resetSearch
+}
+
+//Swap from and to stations
+function swapFromAndToStations(){
+    $fromStation = $_SESSION["search"]["fromStation"];
+    $toStation = $_SESSION["search"]["toStation"];
+    $_SESSION["search"]["fromStation"] = $toStation;
+    $_SESSION["search"]["toStation"] = $fromStation;
+}
+
+//Parse the official timetable HTML with DOM and create an inner representation from it as described in TripCollectionClass.php
+function search() {
+    $tripCollection = getTripCollection($_SESSION["search"]);
+    $_SESSION["tripCollection"] = $tripCollection;
+    
+    if(!isset($tripCollection)){
+        $errorMessages["search"] = "Sikertelen keresés";
+    } else if(count($tripCollection->trips) == 0){
+        $errorMessages["search"] = "Sikertelen keresés";
+    } else{
+        //$firephp->log($tripCollection, "tripCollection");
+        header( "Location: " . $htmlBaseHref . "/tripinfo.php" );
+    }
+}
 ?>
